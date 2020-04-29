@@ -1,10 +1,18 @@
 <template>
     <div class="container">
-        <p class="icon ap-github"></p>
-        <p class="input">
-            <span>client_id</span><input v-model="clientId" type="text" />
-        </p>
-        <p class="btn" @click="onClickRequest"><a>request</a></p>
+        <ul v-if="!selectedProvider" class="providerList">
+            <li
+                v-for="(provider, index) in providerList"
+                :key="index"
+                @click="onClickProvider(provider.name)"
+            >
+                <p class="icon" :class="provider.iconClassName"></p>
+                <p class="text">{{ provider.name }}</p>
+            </li>
+        </ul>
+        <div v-else>
+            <github-login v-if="selectedProvider == 'GitHub'"></github-login>
+        </div>
     </div>
 </template>
 
@@ -12,18 +20,48 @@
 import Vue from 'vue'
 import Component from 'nuxt-class-component'
 
-@Component({})
-export default class Index extends Vue {
-    clientId: string = ''
+import GithubLogin from '~/components/github/login.vue'
 
-    onClickRequest() {
-        location.href = `https://github.com/login/oauth/authorize?client_id=${this.clientId}&scope=user`
+@Component({
+    components: {
+        GithubLogin
+    }
+})
+export default class Index extends Vue {
+    providerList = [
+        {
+            name: 'GitHub',
+            iconClassName: 'ap-github'
+        }
+    ]
+
+    selectedProvider: string = ''
+
+    onClickProvider(provider: string) {
+        this.selectedProvider = provider
     }
 }
 </script>
 
-<style>
+<style scoped lang="scss">
 .container {
     margin: 0 auto;
+    padding: 40px;
+}
+.providerList {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    & > li {
+        cursor: pointer;
+        .icon {
+            font-size: 124px;
+        }
+        .text {
+            font-size: 16px;
+            font-weight: bold;
+        }
+    }
 }
 </style>
