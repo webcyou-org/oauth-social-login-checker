@@ -1,8 +1,5 @@
 module.exports = {
     mode: 'spa',
-    /*
-     ** Headers of the page
-     */
     head: {
         title: process.env.npm_package_name || '',
         meta: [
@@ -19,46 +16,27 @@ module.exports = {
         ],
         link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
     },
-    /*
-     ** Customize the progress-bar color
-     */
     loading: { color: '#fff' },
-    /*
-     ** Global CSS
-     */
     css: [],
-    /*
-     ** Plugins to load before mounting the App
-     */
     plugins: [],
-    /*
-     ** Nuxt.js dev-modules
-     */
     buildModules: [
         '@nuxt/typescript-build',
         // Doc: https://github.com/nuxt-community/stylelint-module
         '@nuxtjs/stylelint-module'
     ],
-    /*
-     ** Nuxt.js modules
-     */
     modules: [
         // Doc: https://axios.nuxtjs.org/usage
         '@nuxtjs/axios',
         '@nuxtjs/pwa'
     ],
-    /*
-     ** Axios module configuration
-     ** See https://axios.nuxtjs.org/options
-     */
     axios: {},
-    /*
-     ** Build configuration
-     */
     build: {
-        /*
-         ** You can extend webpack config here
-         */
+        babel: {
+            plugins: [
+                'transform-decorators-legacy',
+                'transform-class-properties'
+            ]
+        }
         // extend(config, ctx) {}
     }
 }
