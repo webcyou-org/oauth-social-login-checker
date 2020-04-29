@@ -1,6 +1,5 @@
 <template>
     <div class="container">
-        <h1>OAuth Social Login callback</h1>
         <p class="input">
             <span>client_id</span><input v-model="clientId" type="text" />
         </p>

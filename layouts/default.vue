@@ -1,9 +1,27 @@
 <template>
     <div>
+        <header class="header">
+            <div class="box">
+                <h1 class="title header" @click="onClickTitle">
+                    OAuth Social Login Checker
+                </h1>
+            </div>
+        </header>
         <nuxt />
     </div>
 </template>
 
+<script lang="ts">
+import Vue from 'vue'
+import Component from 'nuxt-class-component'
+
+@Component({})
+export default class Index extends Vue {
+    onClickTitle() {
+        this.$router.push('/')
+    }
+}
+</script>
 <style>
 html {
     font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
@@ -24,32 +42,7 @@ html {
     margin: 0;
 }
 
-.button--green {
-    display: inline-block;
-    border-radius: 4px;
-    border: 1px solid #3b8070;
-    color: #3b8070;
-    text-decoration: none;
-    padding: 10px 30px;
-}
-
-.button--green:hover {
-    color: #fff;
-    background-color: #3b8070;
-}
-
-.button--grey {
-    display: inline-block;
-    border-radius: 4px;
-    border: 1px solid #35495e;
-    color: #35495e;
-    text-decoration: none;
-    padding: 10px 30px;
-    margin-left: 15px;
-}
-
-.button--grey:hover {
-    color: #fff;
-    background-color: #35495e;
+.header {
+    cursor: pointer;
 }
 </style>
