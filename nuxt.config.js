@@ -17,8 +17,9 @@ module.exports = {
         link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
     },
     loading: { color: '#fff' },
-    css: [],
+    css: ['@atomic-package/css/dist/atomic-package/atomic-package.css'],
     plugins: [],
+    serverMiddleware: [{ path: '/api', handler: '~/server/index.js' }],
     buildModules: [
         '@nuxt/typescript-build',
         // Doc: https://github.com/nuxt-community/stylelint-module
@@ -27,16 +28,11 @@ module.exports = {
     modules: [
         // Doc: https://axios.nuxtjs.org/usage
         '@nuxtjs/axios',
+        '@nuxtjs/proxy',
         '@nuxtjs/pwa'
     ],
     axios: {},
     build: {
-        babel: {
-            plugins: [
-                'transform-decorators-legacy',
-                'transform-class-properties'
-            ]
-        }
         // extend(config, ctx) {}
     }
 }
