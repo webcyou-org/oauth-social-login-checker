@@ -20,6 +20,26 @@
                         </p>
                     </td>
                 </tr>
+                <tr>
+                    <td>redirect_uri</td>
+                    <td>http://localhost:3000/callback</td>
+                </tr>
+                <tr>
+                    <td>login</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>scope</td>
+                    <td>user</td>
+                </tr>
+                <tr>
+                    <td>state</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>allow_signup</td>
+                    <td></td>
+                </tr>
             </tbody>
         </table>
         <ul class="btnList center">
