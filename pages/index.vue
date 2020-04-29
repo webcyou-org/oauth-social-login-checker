@@ -4,14 +4,23 @@
             <li
                 v-for="(provider, index) in providerList"
                 :key="index"
-                @click="onClickProvider(provider.name)"
+                @click="onClickProvider(provider)"
             >
                 <p class="icon" :class="provider.iconClassName"></p>
                 <p class="text">{{ provider.name }}</p>
             </li>
         </ul>
         <div v-else>
-            <github-login v-if="selectedProvider == 'GitHub'"></github-login>
+            <h2 class="title center provider">
+                <span
+                    :class="selectedProvider.iconClassName"
+                    class="icon"
+                ></span>
+                {{ selectedProvider.name }}
+            </h2>
+            <github-login
+                v-if="selectedProvider.name == 'GitHub'"
+            ></github-login>
         </div>
     </div>
 </template>
@@ -22,22 +31,35 @@ import Component from 'nuxt-class-component'
 
 import GithubLogin from '~/components/github/login.vue'
 
+interface Provider {
+    name: string
+    iconClassName: string
+}
+
 @Component({
     components: {
         GithubLogin
     }
 })
 export default class Index extends Vue {
-    providerList = [
+    providerList: Provider[] = [
+        {
+            name: 'Google',
+            iconClassName: 'ap-google'
+        },
+        {
+            name: 'Facebook',
+            iconClassName: 'ap-facebook'
+        },
         {
             name: 'GitHub',
             iconClassName: 'ap-github'
         }
     ]
 
-    selectedProvider: string = ''
+    selectedProvider: Provider | null = null
 
-    onClickProvider(provider: string) {
+    onClickProvider(provider: Provider) {
         this.selectedProvider = provider
     }
 }
@@ -52,8 +74,10 @@ export default class Index extends Vue {
     display: flex;
     justify-content: center;
     align-items: center;
+    min-height: 400px;
     text-align: center;
     & > li {
+        margin: 40px;
         cursor: pointer;
         .icon {
             font-size: 124px;
@@ -61,6 +85,15 @@ export default class Index extends Vue {
         .text {
             font-size: 16px;
             font-weight: bold;
+        }
+    }
+}
+
+.title {
+    &.provider {
+        font-size: 30px;
+        & > .icon {
+            font-size: 30px;
         }
     }
 }

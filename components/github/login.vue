@@ -1,10 +1,32 @@
 <template>
     <div>
-        <p class="icon ap-github"></p>
-        <p class="input">
-            <span>client_id</span><input v-model="clientId" type="text" />
-        </p>
-        <p class="btn" @click="onClickRequest"><a>request</a></p>
+        <table class="table mt-20 mb-50">
+            <thead>
+                <tr>
+                    <th>name</th>
+                    <th>value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Grant Type</td>
+                    <td>Authorization Code</td>
+                </tr>
+                <tr>
+                    <td>client_id</td>
+                    <td>
+                        <p class="input long">
+                            <input v-model="clientId" type="text" />
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <ul class="btnList center">
+            <li class="btn green large" @click="onClickRequest">
+                <a>Request</a>
+            </li>
+        </ul>
     </div>
 </template>
 
