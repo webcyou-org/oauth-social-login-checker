@@ -20,18 +20,26 @@ module.exports = {
     css: ['@atomic-package/css/dist/atomic-package/atomic-package.css'],
     plugins: [],
     serverMiddleware: [{ path: '/api', handler: '~/server/index.js' }],
-    buildModules: [
-        '@nuxt/typescript-build',
-        // Doc: https://github.com/nuxt-community/stylelint-module
-        '@nuxtjs/stylelint-module'
-    ],
+    proxy: {
+        '/github/': {
+            target: 'https://github.com/',
+            pathRewrite: { '^/github/': '' }
+        },
+        '/github_api/': {
+            target: 'https://api.github.com/',
+            pathRewrite: { '^/github_api/': '' }
+        }
+    },
+    buildModules: ['@nuxt/typescript-build', '@nuxtjs/stylelint-module'],
     modules: [
         // Doc: https://axios.nuxtjs.org/usage
         '@nuxtjs/axios',
         '@nuxtjs/proxy',
         '@nuxtjs/pwa'
     ],
-    axios: {},
+    axios: {
+        proxy: true
+    },
     build: {
         // extend(config, ctx) {}
     }
