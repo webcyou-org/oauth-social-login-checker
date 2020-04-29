@@ -52,6 +52,10 @@ export default class Index extends Vue {
             iconClassName: 'ap-facebook'
         },
         {
+            name: 'Twitter',
+            iconClassName: 'ap-twitter'
+        },
+        {
             name: 'GitHub',
             iconClassName: 'ap-github'
         }
