@@ -5,7 +5,7 @@
             GitHub
         </h2>
 
-        <github-callBack></github-callBack>
+        <github-callBack :code="code"></github-callBack>
     </div>
 </template>
 
@@ -21,11 +21,13 @@ import GithubCallBack from '~/components/github/callback.vue'
     }
 })
 export default class CallBack extends Vue {
+    code: string = ''
     state: string = ''
 
     asyncData({ query }: { query: any }) {
         return {
-            state: query.state ? query.state : null
+            state: query.state ? query.state : null,
+            code: query.code ? query.code : null
         }
     }
 }

@@ -70,22 +70,16 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import Component from 'nuxt-class-component'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 
-@Component({})
+@Component
 export default class GithubCallBack extends Vue {
-    code: string = ''
+    @Prop(String) readonly code: string | undefined
+
     clientId: string = ''
     clientSecret: string = ''
     responseData: any = ''
     userData: string = ''
-
-    asyncData({ query }: { query: any }) {
-        return {
-            code: query.code ? query.code : null
-        }
-    }
 
     async onClickRequest(): Promise<any> {
         await this.$axios
