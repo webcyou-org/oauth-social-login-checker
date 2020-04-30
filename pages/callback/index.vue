@@ -5,7 +5,10 @@
             GitHub
         </h2>
 
-        <github-callBack :code="code"></github-callBack>
+        <github-callBack
+            v-if="state === 'github'"
+            :code="code"
+        ></github-callBack>
     </div>
 </template>
 

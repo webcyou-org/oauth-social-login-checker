@@ -35,10 +35,7 @@ import Component from 'nuxt-class-component'
 import GithubLogin from '~/components/github/login.vue'
 import FacebookLogin from '~/components/facebook/login.vue'
 
-interface Provider {
-    name: string
-    iconClassName: string
-}
+import { providerList, ProviderObject } from '~/lib/config/provider_list'
 
 @Component({
     components: {
@@ -47,28 +44,11 @@ interface Provider {
     }
 })
 export default class Index extends Vue {
-    providerList: Provider[] = [
-        {
-            name: 'Google',
-            iconClassName: 'ap-google'
-        },
-        {
-            name: 'Facebook',
-            iconClassName: 'ap-facebook'
-        },
-        {
-            name: 'Twitter',
-            iconClassName: 'ap-twitter'
-        },
-        {
-            name: 'GitHub',
-            iconClassName: 'ap-github'
-        }
-    ]
+    providerList = providerList
 
-    selectedProvider: Provider | null = null
+    selectedProvider: ProviderObject | null = null
 
-    onClickProvider(provider: Provider) {
+    onClickProvider(provider: ProviderObject) {
         this.selectedProvider = provider
     }
 }
