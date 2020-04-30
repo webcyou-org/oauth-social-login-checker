@@ -21,6 +21,9 @@
             <github-login
                 v-if="selectedProvider.name == 'GitHub'"
             ></github-login>
+            <facebook-login
+                v-if="selectedProvider.name == 'Facebook'"
+            ></facebook-login>
         </div>
     </div>
 </template>
@@ -30,6 +33,7 @@ import Vue from 'vue'
 import Component from 'nuxt-class-component'
 
 import GithubLogin from '~/components/github/login.vue'
+import FacebookLogin from '~/components/facebook/login.vue'
 
 interface Provider {
     name: string
@@ -38,6 +42,7 @@ interface Provider {
 
 @Component({
     components: {
+        FacebookLogin,
         GithubLogin
     }
 })
