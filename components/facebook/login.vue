@@ -47,8 +47,7 @@ export default class FacebookLogin extends Vue {
     clientId: string = ''
 
     onClickRequest() {
-        location.href = `https://www.facebook.com/dialog/oauth?client_id=${this.clientId}&redirect_uri=http://localhost:3000/callback
-&state=facebook`
+        location.href = `https://www.facebook.com/dialog/oauth?client_id=${this.clientId}&redirect_uri=http://localhost:3000/callback&state=facebook`
     }
 }
 </script>

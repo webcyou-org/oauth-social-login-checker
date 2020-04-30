@@ -34,7 +34,7 @@
                 </tr>
                 <tr>
                     <td>state</td>
-                    <td></td>
+                    <td>github</td>
                 </tr>
                 <tr>
                     <td>allow_signup</td>
@@ -59,7 +59,7 @@ export default class GithubLogin extends Vue {
     clientId: string = ''
 
     onClickRequest() {
-        location.href = `https://github.com/login/oauth/authorize?client_id=${this.clientId}&scope=user`
+        location.href = `https://github.com/login/oauth/authorize?client_id=${this.clientId}&scope=user&state=github`
     }
 }
 </script>
