@@ -83,7 +83,7 @@ export default class Index extends Vue {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 400px;
+    min-height: 70vh;
     text-align: center;
     & > li {
         margin: 40px;
