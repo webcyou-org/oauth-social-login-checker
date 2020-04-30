@@ -81,7 +81,7 @@ export default class GithubCallBack extends Vue {
     responseData: any = ''
     userData: string = ''
 
-    async onClickRequest(): Promise<any> {
+    async onClickRequest(): Promise<void> {
         await this.$axios
             .post(
                 '/github/login/oauth/access_token',
@@ -102,7 +102,7 @@ export default class GithubCallBack extends Vue {
             })
     }
 
-    async onClickFetchUser(): Promise<any> {
+    async onClickFetchUser(): Promise<void> {
         await this.$axios
             .post(
                 '/github_api/user',
