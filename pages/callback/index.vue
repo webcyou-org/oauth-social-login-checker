@@ -5,6 +5,10 @@
             {{ providerName }}
         </h2>
 
+        <facebook-callBack
+            v-if="isState('facebook')"
+            :code="code"
+        ></facebook-callBack>
         <github-callBack
             v-if="isState('github')"
             :code="code"
@@ -18,11 +22,13 @@ import Component from 'nuxt-class-component'
 
 import { find } from 'lodash'
 import GithubCallBack from '~/components/github/callback.vue'
+import FacebookCallBack from '~/components/facebook/callback.vue'
 
 import { providerList, ProviderObject } from '~/lib/config/provider_list'
 
 @Component({
     components: {
+        FacebookCallBack,
         GithubCallBack
     }
 })

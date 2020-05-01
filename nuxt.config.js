@@ -28,6 +28,10 @@ module.exports = {
         '/github_api/': {
             target: 'https://api.github.com/',
             pathRewrite: { '^/github_api/': '' }
+        },
+        '/facebook/': {
+            target: 'https://graph.facebook.com/',
+            pathRewrite: { '^/facebook/': '' }
         }
     },
     buildModules: ['@nuxt/typescript-build', '@nuxtjs/stylelint-module'],

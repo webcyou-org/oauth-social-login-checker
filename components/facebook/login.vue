@@ -25,6 +25,14 @@
                     <td>http://localhost:3000/callback</td>
                 </tr>
                 <tr>
+                    <td>response_type</td>
+                    <td>code</td>
+                </tr>
+                <tr>
+                    <td>scope</td>
+                    <td></td>
+                </tr>
+                <tr>
                     <td>state</td>
                     <td>facebook</td>
                 </tr>
