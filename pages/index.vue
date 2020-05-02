@@ -18,12 +18,11 @@
                 ></span>
                 {{ selectedProvider.name }}
             </h2>
-            <github-login
-                v-if="selectedProvider.name == 'GitHub'"
-            ></github-login>
+            <google-login v-if="isSelectedProvider('Google')"></google-login>
             <facebook-login
-                v-if="selectedProvider.name == 'Facebook'"
+                v-if="isSelectedProvider('Facebook')"
             ></facebook-login>
+            <github-login v-if="isSelectedProvider('GitHub')"></github-login>
         </div>
     </div>
 </template>
@@ -32,13 +31,15 @@
 import Vue from 'vue'
 import Component from 'nuxt-class-component'
 
-import GithubLogin from '~/components/github/login.vue'
+import GoogleLogin from '~/components/google/login.vue'
 import FacebookLogin from '~/components/facebook/login.vue'
+import GithubLogin from '~/components/github/login.vue'
 
 import { providerList, ProviderObject } from '~/lib/config/provider_list'
 
 @Component({
     components: {
+        GoogleLogin,
         FacebookLogin,
         GithubLogin
     }
@@ -47,6 +48,11 @@ export default class Index extends Vue {
     providerList = providerList
 
     selectedProvider: ProviderObject | null = null
+
+    isSelectedProvider(name: string): boolean {
+        if (!this.selectedProvider) return false
+        return this.selectedProvider.name === name
+    }
 
     onClickProvider(provider: ProviderObject) {
         this.selectedProvider = provider

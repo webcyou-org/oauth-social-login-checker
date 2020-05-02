@@ -5,13 +5,17 @@
             {{ providerName }}
         </h2>
 
+        <google-callBack
+            v-if="isState('google')"
+            :call-back-data="callBackQueryData"
+        ></google-callBack>
         <facebook-callBack
             v-if="isState('facebook')"
-            :code="code"
+            :call-back-data="callBackQueryData"
         ></facebook-callBack>
         <github-callBack
             v-if="isState('github')"
-            :code="code"
+            :call-back-data="callBackQueryData"
         ></github-callBack>
     </div>
 </template>
@@ -21,26 +25,29 @@ import Vue from 'vue'
 import Component from 'nuxt-class-component'
 
 import { find } from 'lodash'
-import GithubCallBack from '~/components/github/callback.vue'
+
+import GoogleCallBack from '~/components/google/callback.vue'
 import FacebookCallBack from '~/components/facebook/callback.vue'
+import GithubCallBack from '~/components/github/callback.vue'
 
 import { providerList, ProviderObject } from '~/lib/config/provider_list'
 
 @Component({
     components: {
+        GoogleCallBack,
         FacebookCallBack,
         GithubCallBack
     }
 })
 export default class CallBack extends Vue {
-    code: string = ''
+    callBackQueryData: any
     state: string = ''
     provider: ProviderObject | undefined
 
     asyncData({ query }: { query: any }) {
         return {
             state: query.state ? query.state : null,
-            code: query.code ? query.code : null,
+            callBackQueryData: query || null,
             provider: find(providerList, { state: query.state })
         }
     }

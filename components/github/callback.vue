@@ -28,13 +28,12 @@
                         </p>
                     </td>
                 </tr>
-                <tr>
-                    <td>code</td>
-                    <td>
-                        <p class="input long">
-                            <input type="text" :value="code" readonly />
-                        </p>
-                    </td>
+                <tr
+                    v-for="(value, name, index) in callBackData"
+                    :key="`callBackData${index}`"
+                >
+                    <td>{{ name }}</td>
+                    <td>{{ value }}</td>
                 </tr>
                 <template v-if="responseData">
                     <tr
@@ -74,7 +73,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 
 @Component
 export default class GithubCallBack extends Vue {
-    @Prop(String) readonly code: string | undefined
+    @Prop() readonly callBackData: any | undefined
 
     clientId: string = ''
     clientSecret: string = ''
@@ -86,7 +85,7 @@ export default class GithubCallBack extends Vue {
             .post(
                 '/github/login/oauth/access_token',
                 {
-                    code: this.code,
+                    code: this.callBackData.code,
                     client_id: this.clientId,
                     client_secret: this.clientSecret
                 },

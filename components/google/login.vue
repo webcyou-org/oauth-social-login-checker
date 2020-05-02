@@ -1,0 +1,65 @@
+<template>
+    <div>
+        <table class="table mt-20 mb-50">
+            <thead>
+                <tr>
+                    <th>name</th>
+                    <th>value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Grant Type</td>
+                    <td>Authorization Code</td>
+                </tr>
+                <tr>
+                    <td>client_id</td>
+                    <td>
+                        <p class="input long">
+                            <input v-model="clientId" type="text" />
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>redirect_uri</td>
+                    <td>http://localhost:3000/callback</td>
+                </tr>
+                <tr>
+                    <td>response_type</td>
+                    <td>code</td>
+                </tr>
+                <tr>
+                    <td>scope</td>
+                    <td>openid profile</td>
+                </tr>
+                <tr>
+                    <td>state</td>
+                    <td>google</td>
+                </tr>
+                <tr>
+                    <td>nonce</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+        <ul class="btnList center">
+            <li class="btn green large" @click="onClickRequest">
+                <a>Request</a>
+            </li>
+        </ul>
+    </div>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+import Component from 'nuxt-class-component'
+
+@Component({})
+export default class GoogleLogin extends Vue {
+    clientId: string = ''
+
+    onClickRequest() {
+        location.href = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${this.clientId}&redirect_uri=http://localhost:3000/callback&scope=openid profile&state=google`
+    }
+}
+</script>

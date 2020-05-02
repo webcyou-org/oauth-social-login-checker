@@ -28,10 +28,7 @@
                         </p>
                     </td>
                 </tr>
-                <tr
-                    v-for="(value, name, index) in callBackData"
-                    :key="`callBackData${index}`"
-                >
+                <tr v-for="(value, name, index) in callBackData" :key="index">
                     <td>{{ name }}</td>
                     <td>{{ value }}</td>
                 </tr>
@@ -89,7 +86,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 
 @Component
-export default class FacebookCallBack extends Vue {
+export default class GoogleCallBack extends Vue {
     @Prop() readonly callBackData: any | undefined
 
     clientId: string = ''
@@ -101,7 +98,7 @@ export default class FacebookCallBack extends Vue {
     async onClickRequest(): Promise<void> {
         await this.$axios
             .get(
-                `https://graph.facebook.com/v6.0/oauth/access_token?code=${this.callBackData.code}&client_id=${this.clientId}&client_secret=${this.clientSecret}&redirect_uri=http://localhost:3000/callback`
+                `https://graph.facebook.com/v6.0/oauth/access_token?code=${this.responseData.code}&client_id=${this.clientId}&client_secret=${this.clientSecret}&redirect_uri=http://localhost:3000/callback`
             )
             .then((res: any) => {
                 this.responseData = res.data
