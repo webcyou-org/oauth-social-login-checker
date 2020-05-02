@@ -32,6 +32,14 @@ module.exports = {
         '/facebook/': {
             target: 'https://graph.facebook.com/',
             pathRewrite: { '^/facebook/': '' }
+        },
+        '/google_accounts/': {
+            target: 'https://accounts.google.com/',
+            pathRewrite: { '^/google_accounts/': '' }
+        },
+        '/google_oauth2/': {
+            target: 'https://oauth2.googleapis.com/',
+            pathRewrite: { '^/google_oauth2/': '' }
         }
     },
     buildModules: ['@nuxt/typescript-build', '@nuxtjs/stylelint-module'],

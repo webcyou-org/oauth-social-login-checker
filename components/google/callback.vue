@@ -10,7 +10,7 @@
             <tbody>
                 <tr>
                     <td>Grant Type</td>
-                    <td>Authorization Code</td>
+                    <td>Openid Connect</td>
                 </tr>
                 <tr>
                     <td>client_id</td>
@@ -97,9 +97,13 @@ export default class GoogleCallBack extends Vue {
 
     async onClickRequest(): Promise<void> {
         await this.$axios
-            .get(
-                `https://graph.facebook.com/v6.0/oauth/access_token?code=${this.responseData.code}&client_id=${this.clientId}&client_secret=${this.clientSecret}&redirect_uri=http://localhost:3000/callback`
-            )
+            .post('/google_oauth2/token', {
+                code: this.callBackData.code,
+                client_id: this.clientId,
+                client_secret: this.clientSecret,
+                redirect_uri: 'http://localhost:3000/callback',
+                grant_type: 'authorization_code'
+            })
             .then((res: any) => {
                 this.responseData = res.data
             })
