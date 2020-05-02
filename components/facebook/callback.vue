@@ -49,12 +49,18 @@
                         <td>{{ value }}</td>
                     </tr>
                 </template>
-                <template v-if="userData">
+                <tr v-if="verificationData">
+                    <td>VerificationData</td>
+                    <td>
+                        <pre>{{ verificationData }}</pre>
+                    </td>
+                </tr>
+                <tr v-if="userData">
                     <td>userData</td>
                     <td>
                         <pre>{{ userData }}</pre>
                     </td>
-                </template>
+                </tr>
             </tbody>
         </table>
 
@@ -66,7 +72,14 @@
             >
                 <a>Request AccessToken</a>
             </li>
-            <li v-else class="btn green large" @click="onClickFetchUser">
+            <li v-else class="btn green large" @click="onClickVerification">
+                <a>Token Verification</a>
+            </li>
+            <li
+                v-if="verificationData"
+                class="btn green large"
+                @click="onClickFetchUser"
+            >
                 <a>FetchUser</a>
             </li>
         </ul>
@@ -83,6 +96,7 @@ export default class FacebookCallBack extends Vue {
     clientId: string = ''
     clientSecret: string = ''
     responseData: any = ''
+    verificationData: any = ''
     userData: string = ''
 
     async onClickRequest(): Promise<void> {
@@ -95,16 +109,20 @@ export default class FacebookCallBack extends Vue {
             })
     }
 
+    async onClickVerification(): Promise<void> {
+        await this.$axios
+            .get(
+                `https://graph.facebook.com/debug_token?input_token=${this.responseData.access_token}&access_token=${this.clientId}|${this.clientSecret}`
+            )
+            .then((res: any) => {
+                this.verificationData = res.data.data
+            })
+    }
+
     async onClickFetchUser(): Promise<void> {
         await this.$axios
-            .post(
-                '/github_api/user',
-                {},
-                {
-                    headers: {
-                        Authorization: `token ${this.responseData.access_token}`
-                    }
-                }
+            .get(
+                `https://graph.facebook.com/${this.verificationData.user_id}/?fields=name,birthday,email,hometown&access_token=${this.responseData.access_token}`
             )
             .then((res: any) => {
                 this.userData = res.data
