@@ -40,6 +40,10 @@ module.exports = {
         '/google_oauth2/': {
             target: 'https://oauth2.googleapis.com/',
             pathRewrite: { '^/google_oauth2/': '' }
+        },
+        '/twitter_api/': {
+            target: 'https://api.twitter.com/',
+            pathRewrite: { '^/twitter_api/': '' }
         }
     },
     buildModules: ['@nuxt/typescript-build', '@nuxtjs/stylelint-module'],

@@ -22,6 +22,7 @@
             <facebook-login
                 v-if="isSelectedProvider('Facebook')"
             ></facebook-login>
+            <twitter-login v-if="isSelectedProvider('Twitter')"></twitter-login>
             <github-login v-if="isSelectedProvider('GitHub')"></github-login>
         </div>
     </div>
@@ -33,6 +34,7 @@ import Component from 'nuxt-class-component'
 
 import GoogleLogin from '~/components/google/login.vue'
 import FacebookLogin from '~/components/facebook/login.vue'
+import TwitterLogin from '~/components/twitter/login.vue'
 import GithubLogin from '~/components/github/login.vue'
 
 import { providerList, ProviderObject } from '~/lib/config/provider_list'
@@ -41,6 +43,7 @@ import { providerList, ProviderObject } from '~/lib/config/provider_list'
     components: {
         GoogleLogin,
         FacebookLogin,
+        TwitterLogin,
         GithubLogin
     }
 })
