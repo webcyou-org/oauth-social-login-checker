@@ -41,6 +41,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'nuxt-class-component'
+import queryString from 'query-string'
 const OAuthSignature = require('oauth-signature')
 
 @Component({})
@@ -73,7 +74,8 @@ export default class TwitterLogin extends Vue {
                 }
             })
             .then((res: any) => {
-                console.log(res.data)
+                const parsed = queryString.parse(res.data)
+                console.log(parsed)
             })
     }
 }
