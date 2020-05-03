@@ -9,8 +9,8 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Grant Type</td>
-                    <td>Authorization Code</td>
+                    <td>Version</td>
+                    <td>OAuth 1.0</td>
                 </tr>
                 <tr>
                     <td>Consumer Key</td>
@@ -27,6 +27,10 @@
                             <input v-model="consumerSecret" type="text" />
                         </p>
                     </td>
+                </tr>
+                <tr>
+                    <td>redirect_uri</td>
+                    <td>http://localhost:3000/callback/twitter</td>
                 </tr>
                 <tr
                     v-for="(value, name, index) in requestTokenResponseData"
