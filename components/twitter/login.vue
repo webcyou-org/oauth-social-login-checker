@@ -28,11 +28,25 @@
                         </p>
                     </td>
                 </tr>
+                <tr
+                    v-for="(value, name, index) in requestTokenResponseData"
+                    :key="index"
+                >
+                    <td>{{ name }}</td>
+                    <td>{{ value }}</td>
+                </tr>
             </tbody>
         </table>
         <ul class="btnList center">
             <li class="btn green large" @click="onClickRequest">
                 <a>Request</a>
+            </li>
+            <li
+                v-if="requestTokenResponseData.oauth_token"
+                class="btn green large"
+                @click="onClickLogin"
+            >
+                <a>Login</a>
             </li>
         </ul>
     </div>
@@ -48,6 +62,7 @@ const OAuthSignature = require('oauth-signature')
 export default class TwitterLogin extends Vue {
     consumerKey: string = ''
     consumerSecret: string = ''
+    requestTokenResponseData: any = {}
 
     async onClickRequest(): Promise<void> {
         const httpMethod = 'GET'
@@ -74,9 +89,12 @@ export default class TwitterLogin extends Vue {
                 }
             })
             .then((res: any) => {
-                const parsed = queryString.parse(res.data)
-                console.log(parsed)
+                this.requestTokenResponseData = queryString.parse(res.data)
             })
+    }
+
+    onClickLogin() {
+        location.href = `https://api.twitter.com/oauth/authenticate?oauth_token=${this.requestTokenResponseData.oauth_token}&oauth_callback=http%3A%2F%2Flocalhost%3A3000%2Fcallback`
     }
 }
 </script>
