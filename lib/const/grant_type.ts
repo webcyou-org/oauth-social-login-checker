@@ -14,6 +14,10 @@ export const GRANT = {
         {
             name: 'Resource Owner Password Credentials',
             value: 'resource_owner_password_credentials'
+        },
+        {
+            name: 'Hybrid Flow',
+            value: 'hybrid_flow'
         }],
     TYPE: {
         AUTHORIZATION_CODE: {
@@ -31,6 +35,10 @@ export const GRANT = {
         RESOURCE_OWNER_PASSWORD_CREDENTIALS: {
             NAME: 'Resource Owner Password Credentials',
             VALUE: 'resource_owner_password_credentials'
+        },
+        HYBRID_FLOW: {
+            NAME: 'Hybrid Flow',
+            VALUE: 'hybrid_flow'
         }
     }
 }

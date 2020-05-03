@@ -39,7 +39,7 @@
                 <template v-if="responseData">
                     <tr
                         v-for="(value, name, index) in responseData"
-                        :key="index"
+                        :key="`responseData${index}`"
                     >
                         <td>{{ name }}</td>
                         <td>{{ value }}</td>
@@ -70,13 +70,6 @@
             </li>
             <li v-else class="btn green large" @click="onClickVerification">
                 <a>Token Verification</a>
-            </li>
-            <li
-                v-if="verificationData"
-                class="btn green large"
-                @click="onClickFetchUser"
-            >
-                <a>FetchUser</a>
             </li>
         </ul>
     </div>
@@ -116,16 +109,6 @@ export default class GoogleCallBack extends Vue {
             )
             .then((res: any) => {
                 this.verificationData = res.data.data
-            })
-    }
-
-    async onClickFetchUser(): Promise<void> {
-        await this.$axios
-            .get(
-                `https://graph.facebook.com/${this.verificationData.user_id}/?fields=name,birthday,email,hometown&access_token=${this.responseData.access_token}`
-            )
-            .then((res: any) => {
-                this.userData = res.data
             })
     }
 }

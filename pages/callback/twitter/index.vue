@@ -42,7 +42,7 @@
                 <template v-if="callBackUserData">
                     <tr
                         v-for="(value, name, index) in callBackUserData"
-                        :key="`'callBackUserData'${index}`"
+                        :key="`callBackUserData${index}`"
                     >
                         <td>{{ name }}</td>
                         <td>{{ value }}</td>
