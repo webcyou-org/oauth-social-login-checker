@@ -42,7 +42,11 @@
             </tbody>
         </table>
         <ul class="btnList center">
-            <li class="btn green large" @click="onClickRequest">
+            <li
+                v-if="!requestTokenResponseData.oauth_token"
+                class="btn green large"
+                @click="onClickRequest"
+            >
                 <a>Request</a>
             </li>
             <li
