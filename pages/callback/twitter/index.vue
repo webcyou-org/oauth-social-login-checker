@@ -121,6 +121,8 @@ export default class CallBack extends Vue {
             this.callBackQueryData.oauth_verifier
         )
 
+        // todo: error "Could not authenticate you","code":32
+        // 'content-type': 'application/x-www-form-urlencoded',
         // ?include_email=true&skip_status=true&include_entities=false
         await this.$axios
             .get('/twitter_api/1.1/account/verify_credentials.json', {
