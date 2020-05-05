@@ -39,8 +39,6 @@ import GithubLogin from '~/components/github/login.vue'
 
 import { providerList, ProviderObject } from '~/lib/config/provider_list'
 
-import { ActionTypes as OAuthActionTypes } from '~/store/oAuthModule'
-
 @Component({
     components: {
         GoogleLogin,
@@ -53,10 +51,6 @@ export default class Index extends Vue {
     providerList = providerList
 
     selectedProvider: ProviderObject | null = null
-
-    created() {
-        this.$store.dispatch(OAuthActionTypes.getOauth)
-    }
 
     isSelectedProvider(name: string): boolean {
         if (!this.selectedProvider) return false
