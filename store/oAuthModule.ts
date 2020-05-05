@@ -21,7 +21,8 @@ export const actions: ActionTree<State, any> = {
     async getOauth(context): Promise<void> {
         // const response: { data: { oauth: OAuth } } = await this.$service.get(context, `/oauth/${id}`)
         // context.commit(SET_OAUTH, response.data.oauth)
-    }
+    },
+    async googleLogin(context): Promise<void> {}
 }
 
 export const mutations: MutationTree<State> = {

@@ -60,6 +60,10 @@ export default class Index extends Vue {
     onClickProvider(provider: ProviderObject) {
         this.selectedProvider = provider
     }
+
+    get oauth(): any {
+        return this.$store.state.oAuthModule.oauth
+    }
 }
 </script>
 
