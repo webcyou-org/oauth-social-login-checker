@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@atomic-package/css": "^0.2.1",
+    "@nuxt/typescript-runtime": "^0.4.6",
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/pwa": "^3.0.0-0",
     "@types/lodash": "^4.14.150",

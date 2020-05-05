@@ -18,7 +18,7 @@ module.exports = {
     },
     loading: { color: '#fff' },
     css: ['@atomic-package/css/dist/atomic-package/atomic-package.css'],
-    plugins: [],
+    plugins: [{ src: '~/plugins/servicePlugin.ts', ssr: true }],
     serverMiddleware: [{ path: '/api', handler: '~/server/index.js' }],
     proxy: {
         '/github/': {
