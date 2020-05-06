@@ -12,8 +12,6 @@ export default (ctx: Context): void => {
     Vue.config.errorHandler = (err: Error | CustomError, _vm: Vue, info: string): void => {
         console.warn(`Vue.config.errorHandler: ${info}`)
 
-        // infoが空の場合 かつ UnauthorizedErrorエラー以外はエラーをログに出力するのみ(unhandledrejectionとエラーが被る場合があるため)
-        // unhandledrejectionが発生しないUnauthorizedErrorエラーが発生する場合もあるため、UnauthorizedErrorエラーの場合はエラーハンドリングする
         if (!info && !(err instanceof UnauthorizedError)) {
             console.warn(err)
             return
@@ -26,7 +24,7 @@ export default (ctx: Context): void => {
         }
     }
 
-    // Promise.rejectedエラー
+    // Promise.rejected error
     // @see https://developer.mozilla.org/ja/docs/Web/API/Window/unhandledrejection_event
     window.addEventListener('unhandledrejection', event => {
         try {
