@@ -3,7 +3,7 @@ import { ActionTree, MutationTree } from 'vuex/types/index'
 import { OAuth } from '~/lib/class/OAuth'
 import { Google } from '~/lib/class/provider/Google'
 
-import { ProviderMap } from '~/lib/class/ProviderMap'
+import { ProviderMap } from '~/lib/config/provider_list'
 
 import { actionsToActionTypes } from '~/lib/utility/actionTypes'
 
