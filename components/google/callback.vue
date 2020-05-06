@@ -77,6 +77,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
+import { merge } from 'lodash'
+import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
 
 @Component
 export default class GoogleCallBack extends Vue {
@@ -88,17 +90,22 @@ export default class GoogleCallBack extends Vue {
     verificationData: any = ''
     userData: string = ''
 
+    created() {
+        const callBackData = merge({ name: 'google' }, this.callBackData)
+        this.$store.dispatch(oAuthActionTypes.setProvider, callBackData)
+    }
+
     async onClickRequest(): Promise<void> {
-        await this.$axios
-            .post('/google_oauth2/token', {
-                code: this.callBackData.code,
-                client_id: this.clientId,
-                client_secret: this.clientSecret,
-                redirect_uri: 'http://localhost:3000/callback',
-                grant_type: 'authorization_code'
-            })
+        await this.$store.dispatch(oAuthActionTypes.updateProvider, {
+            name: 'google',
+            clientId: this.clientId,
+            clientSecret: this.clientSecret
+        })
+        await this.$store
+            .dispatch(oAuthActionTypes.googleRequestToken)
             .then((res: any) => {
-                this.responseData = res.data
+                console.log(res)
+                this.responseData = res
             })
     }
 
