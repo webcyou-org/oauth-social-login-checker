@@ -15,7 +15,6 @@ export class UnauthorizedError extends CustomError {
         if (Error.captureStackTrace) {
             Error.captureStackTrace(this, UnauthorizedError)
         }
-
         this.userMessage = 'UnauthorizedError'
     }
 

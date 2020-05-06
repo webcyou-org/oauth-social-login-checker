@@ -3,6 +3,7 @@ import { AxiosError, AxiosRequestConfig, AxiosResponse, Method } from 'axios'
 import { ActionContext, Commit } from 'vuex'
 import { ServerError } from '~/lib/errors/ServerError'
 import { UnauthorizedError } from '~/lib/errors/UnauthorizedError'
+import { BadRequestError } from '~/lib/errors/BadRequestError'
 import { ActionTypes as LoadingActionTypes } from '~/store/loadingModule'
 
 export interface ServiceErrorHandlerAppInfo {
@@ -51,16 +52,18 @@ export abstract class AbstractService {
                     if (this.app.store) {
                         this.app.store.dispatch(LoadingActionTypes.hideLoading)
                     }
-
                     if (error.response) {
                         const { status } = error.response
 
+                        // BadRequestError
+                        if (status === BadRequestError.STATUS_CODE) {
+                            throw new BadRequestError(error)
+                        }
                         // UnauthorizedError
                         if (status === UnauthorizedError.STATUS_CODE) {
                             throw new UnauthorizedError(error)
                         }
                     }
-
                     throw error
                 }
             )
