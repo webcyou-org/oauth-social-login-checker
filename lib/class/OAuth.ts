@@ -16,4 +16,23 @@ export class OAuth {
         this.flowType = data.flowType || FLOW.TYPE.AUTHORIZATION_CODE.VALUE
         this.scope = data.scope || ResponseType.code
     }
+
+    getOpenIDFlowType(response_type: ResponseType) {
+        let flowType = FLOW.TYPE.AUTHORIZATION_CODE
+        switch (response_type) {
+            case ResponseType.code:
+                flowType = FLOW.TYPE.AUTHORIZATION_CODE
+                break
+            case ResponseType.id_token:
+            case ResponseType.id_token_token:
+                flowType = FLOW.TYPE.IMPLICIT
+                break
+            case ResponseType.code_id_token:
+            case ResponseType.code_token:
+            case ResponseType.code_id_token_token:
+                flowType = FLOW.TYPE.HYBRID_FLOW
+                break
+        }
+        return flowType
+    }
 }
