@@ -42,7 +42,7 @@ html {
     margin: 0;
 }
 
-.header {
+.title.header {
     cursor: pointer;
 }
 </style>
