@@ -17,6 +17,8 @@ import Vue from 'vue'
 import Component from 'nuxt-class-component'
 import AlertMessageList from '~/components/common/alert-message-list.component.vue'
 
+import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
+
 @Component({
     components: {
         AlertMessageList
@@ -24,6 +26,7 @@ import AlertMessageList from '~/components/common/alert-message-list.component.v
 })
 export default class Index extends Vue {
     onClickTitle() {
+        this.$store.dispatch(oAuthActionTypes.resetSelectedProvider)
         this.$router.push('/')
     }
 }

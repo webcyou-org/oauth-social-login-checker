@@ -6,14 +6,14 @@
                 :key="index"
                 @click="onClickProvider(provider)"
             >
-                <p class="icon" :class="provider.iconClassName"></p>
-                <p class="text">{{ provider.name }}</p>
+                <p class="icon" :class="getIconClassName(provider)"></p>
+                <p class="text">{{ provider }}</p>
             </li>
         </ul>
         <div v-else>
             <h2 class="title center provider">
                 <span
-                    :class="selectedProvider.iconClassName"
+                    :class="getIconClassName(selectedProvider.name)"
                     class="icon"
                 ></span>
                 {{ selectedProvider.name }}
@@ -37,7 +37,9 @@ import FacebookLogin from '~/components/facebook/login.vue'
 import TwitterLogin from '~/components/twitter/login.vue'
 import GithubLogin from '~/components/github/login.vue'
 
-import { providerList, ProviderObject } from '~/lib/config/provider_list'
+import { providerList } from '~/lib/config/provider_list'
+
+import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
 
 @Component({
     components: {
@@ -50,19 +52,27 @@ import { providerList, ProviderObject } from '~/lib/config/provider_list'
 export default class Index extends Vue {
     providerList = providerList
 
-    selectedProvider: ProviderObject | null = null
-
     isSelectedProvider(name: string): boolean {
         if (!this.selectedProvider) return false
         return this.selectedProvider.name === name
     }
 
-    onClickProvider(provider: ProviderObject) {
-        this.selectedProvider = provider
+    onClickProvider(name: string) {
+        this.$store.dispatch(oAuthActionTypes.setSelectedProvider, {
+            name
+        })
     }
 
     get oauth(): any {
         return this.$store.state.oAuthModule.oauth
+    }
+
+    get selectedProvider(): any {
+        return this.$store.state.oAuthModule.selectedProvider
+    }
+
+    getIconClassName(name: string): string {
+        return `ap-${name.toLowerCase()}`
     }
 }
 </script>

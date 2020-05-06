@@ -91,13 +91,13 @@ export default class GoogleCallBack extends Vue {
     userData: string = ''
 
     created() {
-        const callBackData = merge({ name: 'google' }, this.callBackData)
+        const callBackData = merge({ name: 'Google' }, this.callBackData)
         this.$store.dispatch(oAuthActionTypes.setProvider, callBackData)
     }
 
     async onClickRequest(): Promise<void> {
         await this.$store.dispatch(oAuthActionTypes.updateProvider, {
-            name: 'google',
+            name: 'Google',
             clientId: this.clientId,
             clientSecret: this.clientSecret
         })

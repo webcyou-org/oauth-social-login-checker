@@ -13,6 +13,7 @@ export class Google extends Provider {
 
         this.code = data.code || ''
         this.scope = data.scope || 'openid profile'
+        this.name = data.name || 'Google'
         this.state = data.state || 'google'
         this.oauth = new OAuth()
     }

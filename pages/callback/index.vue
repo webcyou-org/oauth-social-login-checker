@@ -1,8 +1,11 @@
 <template>
     <div class="container">
-        <h2 class="title center provider">
-            <span class="icon" :class="providerIconClassName"></span>
-            {{ providerName }}
+        <h2 v-if="selectedProvider" class="title center provider">
+            <span
+                class="icon"
+                :class="getIconClassName(selectedProvider.name)"
+            ></span>
+            {{ selectedProvider.name }}
         </h2>
 
         <google-callBack
@@ -24,13 +27,11 @@
 import Vue from 'vue'
 import Component from 'nuxt-class-component'
 
-import { find } from 'lodash'
-
 import GoogleCallBack from '~/components/google/callback.vue'
 import FacebookCallBack from '~/components/facebook/callback.vue'
 import GithubCallBack from '~/components/github/callback.vue'
 
-import { providerList, ProviderObject } from '~/lib/config/provider_list'
+import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
 
 @Component({
     components: {
@@ -41,30 +42,27 @@ import { providerList, ProviderObject } from '~/lib/config/provider_list'
 })
 export default class CallBack extends Vue {
     callBackQueryData: any
-    state: string = ''
-    provider: ProviderObject | undefined
 
-    asyncData({ query }: { query: any }) {
+    asyncData({ query, store }: { query: any; store: any }) {
+        store.dispatch(oAuthActionTypes.setSelectedProvider, {
+            name: query.state
+        })
         return {
-            state: query.state ? query.state : null,
-            callBackQueryData: query || null,
-            provider: find(providerList, { state: query.state })
+            callBackQueryData: query || null
         }
     }
 
-    get providerName(): string {
-        if (!this.provider) return ''
-        return this.provider.name
+    get selectedProvider(): any {
+        return this.$store.state.oAuthModule.selectedProvider
     }
 
-    get providerIconClassName(): string {
-        if (!this.provider) return ''
-        return this.provider.iconClassName
+    getIconClassName(name: string): string {
+        return `ap-${name.toLowerCase()}`
     }
 
     isState(state: string): boolean {
-        if (!this.provider) return false
-        return this.provider.state === state
+        if (!this.selectedProvider) return false
+        return this.selectedProvider.state === state
     }
 }
 </script>

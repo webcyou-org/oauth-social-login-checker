@@ -17,6 +17,8 @@ const UPDATE_OAUTH = 'UPDATE_OAUTH'
 
 const SET_PROVIDER = 'SET_PROVIDER'
 const UPDATE_PROVIDER = 'UPDATE_PROVIDER'
+const SET_SELECTED_PROVIDER = 'SET_SELECTED_PROVIDER'
+const RESET_SELECTED_PROVIDER = 'RESET_SELECTED_PROVIDER'
 
 // action type
 export const ActionTypes = actionsToActionTypes([
@@ -24,16 +26,18 @@ export const ActionTypes = actionsToActionTypes([
     'setProvider',
     'updateProvider',
     'googleLogin',
-    'googleRequestToken'
+    'googleRequestToken',
+    'setSelectedProvider',
+    'resetSelectedProvider'
     ],
     'oAuthModule'
 )
 
-export const state = (): { oauth: OAuth, google: Google, facebook: Facebook, gitHub: GitHub, twitter: Twitter, selectedProvider: any } => ({
+export const state = (): { oauth: OAuth, google: Google, facebook: Facebook, github: GitHub, twitter: Twitter, selectedProvider: any } => ({
     oauth: new OAuth(),
     google: new Google(),
     facebook: new Facebook(),
-    gitHub: new GitHub(),
+    github: new GitHub(),
     twitter: new Twitter(),
     selectedProvider: null
 })
@@ -69,6 +73,14 @@ export const actions: ActionTree<State, any> = {
             params
         )
         return response
+    },
+
+    setSelectedProvider(context, data): void {
+        context.commit(SET_SELECTED_PROVIDER, data)
+    },
+
+    resetSelectedProvider(context): void {
+        context.commit(RESET_SELECTED_PROVIDER)
     }
 }
 
@@ -83,9 +95,17 @@ export const mutations: MutationTree<State> = {
         state.oauth = merge(state.oauth, payload)
     },
     [SET_PROVIDER](state: any, payload: any): void {
-        state[payload.name] = new ProviderMap[payload.name](payload)
+        const lowerCaseProviderName = payload.name.toLowerCase()
+        state[lowerCaseProviderName] = new ProviderMap[lowerCaseProviderName](payload)
     },
     [UPDATE_PROVIDER](state: any, payload): void {
-        state[payload.name] = merge(state[payload.name], payload)
+        const lowerCaseProviderName = payload.name.toLowerCase()
+        state[lowerCaseProviderName] = merge(state[lowerCaseProviderName], payload)
     },
+    [SET_SELECTED_PROVIDER](state: any, payload): void {
+        state.selectedProvider = state[payload.name.toLowerCase()]
+    },
+    [RESET_SELECTED_PROVIDER](state): void {
+        state.selectedProvider = null
+    }
 }
