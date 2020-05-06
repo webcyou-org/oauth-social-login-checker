@@ -1,5 +1,6 @@
 <template>
     <div>
+        <alert-message-list></alert-message-list>
         <header class="header">
             <div class="box">
                 <h1 class="title header" @click="onClickTitle">
@@ -14,8 +15,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'nuxt-class-component'
+import AlertMessageList from '~/components/common/alert-message-list.component.vue'
 
-@Component({})
+@Component({
+    components: {
+        AlertMessageList
+    }
+})
 export default class Index extends Vue {
     onClickTitle() {
         this.$router.push('/')

@@ -104,7 +104,6 @@ export default class GoogleCallBack extends Vue {
         await this.$store
             .dispatch(oAuthActionTypes.googleRequestToken)
             .then((res: any) => {
-                console.log(res)
                 this.responseData = res
             })
     }

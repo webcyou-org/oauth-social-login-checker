@@ -38,3 +38,16 @@ export default class AlertMessageList extends Vue {
     }
 }
 </script>
+<style scoped lang="scss">
+.alertMessageList {
+    position: fixed;
+    top: 24px;
+    left: 0;
+    width: 100%;
+    padding: 0 50px;
+    z-index: 12000;
+    & > li {
+        margin-bottom: 10px;
+    }
+}
+</style>

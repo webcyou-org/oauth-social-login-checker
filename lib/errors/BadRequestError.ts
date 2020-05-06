@@ -1,5 +1,6 @@
 import { Context } from '@nuxt/types'
 import { CustomError } from './CustomError'
+import { ActionTypes as ErrorActionTypes } from '~/store/errorModule'
 
 /**
  * HTTP status = 400
@@ -20,5 +21,6 @@ export class BadRequestError extends CustomError {
 
     async executeFailureHandling({ app, store }: Context): Promise<void> {
         console.warn(this)
+        await store.dispatch(ErrorActionTypes.setError, this)
     }
 }

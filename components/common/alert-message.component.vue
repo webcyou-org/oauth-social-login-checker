@@ -58,3 +58,29 @@ export default class AlertMessage extends Vue {
     }
 }
 </script>
+<style scoped lang="scss">
+.alert {
+    border: none;
+    border-radius: 10px;
+    &.green,
+    &.blue,
+    &.orange,
+    &.red {
+        & > .text {
+            color: #fff;
+        }
+    }
+    &.green {
+        background: #76c679;
+    }
+    &.blue {
+        background: #4e88d6;
+    }
+    &.orange {
+        background: #efbb59;
+    }
+    &.red {
+        background: #e86767;
+    }
+}
+</style>

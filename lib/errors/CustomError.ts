@@ -28,10 +28,8 @@ export abstract class CustomError extends Error {
         if (Error.captureStackTrace) {
             Error.captureStackTrace(this, CustomError)
         }
-
         this.status = status
     }
-
     /**
      * エラーハンドリングの具体的な処理
      */
