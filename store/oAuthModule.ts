@@ -2,6 +2,9 @@ import { merge } from 'lodash'
 import { ActionTree, MutationTree } from 'vuex/types/index'
 import { OAuth } from '~/lib/class/OAuth'
 import { Google } from '~/lib/class/provider/Google'
+import { Facebook } from '~/lib/class/provider/Facebook'
+import { GitHub } from '~/lib/class/provider/GitHub'
+import { Twitter } from '~/lib/class/provider/Twitter'
 
 import { ProviderMap } from '~/lib/config/provider_list'
 
@@ -26,9 +29,13 @@ export const ActionTypes = actionsToActionTypes([
     'oAuthModule'
 )
 
-export const state = (): { oauth: OAuth, google: Google } => ({
+export const state = (): { oauth: OAuth, google: Google, facebook: Facebook, gitHub: GitHub, twitter: Twitter, selectedProvider: any } => ({
     oauth: new OAuth(),
-    google: new Google()
+    google: new Google(),
+    facebook: new Facebook(),
+    gitHub: new GitHub(),
+    twitter: new Twitter(),
+    selectedProvider: null
 })
 
 export type State = ReturnType<typeof state>
