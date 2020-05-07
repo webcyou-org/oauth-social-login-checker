@@ -16,25 +16,25 @@
                     <td>client_id</td>
                     <td>
                         <p class="input long">
-                            <input v-model="clientId" type="text" />
+                            <input v-model="vGoogle.clientId" type="text" />
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td>redirect_uri</td>
-                    <td>http://localhost:3000/callback</td>
+                    <td>{{ vGoogle.redirectUri }}</td>
                 </tr>
                 <tr>
                     <td>response_type</td>
-                    <td>code</td>
+                    <td>{{ vGoogle.responseType }}</td>
                 </tr>
                 <tr>
                     <td>scope</td>
-                    <td>openid profile</td>
+                    <td>{{ vGoogle.scope }}</td>
                 </tr>
                 <tr>
                     <td>state</td>
-                    <td>google</td>
+                    <td>{{ vGoogle.state }}</td>
                 </tr>
                 <tr>
                     <td>nonce</td>
@@ -53,13 +53,23 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'nuxt-class-component'
+import { cloneDeep } from 'lodash'
+import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
 
 @Component({})
 export default class GoogleLogin extends Vue {
-    clientId: string = ''
+    vGoogle = cloneDeep(this.google)
 
-    onClickRequest() {
-        location.href = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${this.clientId}&redirect_uri=http://localhost:3000/callback&scope=openid profile&state=google`
+    async onClickRequest() {
+        await this.$store.dispatch(
+            oAuthActionTypes.updateProvider,
+            this.vGoogle
+        )
+        await this.$store.dispatch(oAuthActionTypes.googleLogin)
+    }
+
+    get google(): any {
+        return this.$store.state.oAuthModule.google
     }
 }
 </script>

@@ -18,7 +18,7 @@ export class Provider {
         this.clientId = data.client_id || ''
         this.clientSecret = data.client_secret || ''
         this.redirectUri = data.redirect_uri || 'http://localhost:3000/callback'
-        this.responseType = data.response_type || ''
+        this.responseType = data.response_type || 'code'
         this.grantType = data.grantType || GRANT.TYPE.AUTHORIZATION_CODE.VALUE
         this.scope = data.scope || ''
         this.state = data.state || ''

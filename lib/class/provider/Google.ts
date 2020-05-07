@@ -2,6 +2,7 @@ import { Provider } from '../Provider'
 import { OAuth } from '../OAuth'
 
 import { pick } from 'lodash'
+import queryString from 'query-string'
 
 export class Google extends Provider {
     public oauth: OAuth
@@ -24,8 +25,22 @@ export class Google extends Provider {
             client_id: this.clientId,
             client_secret: this.clientSecret,
             redirect_uri: this.redirectUri,
-            grant_type: this.grantType
+            grant_type: this.grantType,
+            response_type: this.responseType,
+            scope: this.scope,
+            state: this.state
         }
+    }
+
+    getLoginQuery() {
+        const params = this.getPickRequest([
+            'response_type',
+            'client_id',
+            'redirect_uri',
+            'scope',
+            'state'
+        ])
+        return queryString.stringify(params)
     }
 
     getPickRequest(pickList: string[]): object {

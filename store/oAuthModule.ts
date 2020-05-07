@@ -8,6 +8,8 @@ import { Twitter } from '~/lib/class/provider/Twitter'
 
 import { ProviderMap } from '~/lib/config/provider_list'
 
+import { GoogleURI } from '~/lib/enum/end_point_list'
+
 import { actionsToActionTypes } from '~/lib/utility/actionTypes'
 
 // mutation type
@@ -57,7 +59,10 @@ export const actions: ActionTree<State, any> = {
         context.commit(UPDATE_PROVIDER, data)
     },
 
-    async googleLogin(context): Promise<void> {},
+    async googleLogin(context): Promise<void> {
+        const params = context.state.google.getLoginQuery()
+        location.href = `${GoogleURI.LOGIN}?${params}`
+    },
 
     async googleRequestToken(context): Promise<void> {
         const params = context.state.google.getPickRequest([
@@ -69,7 +74,7 @@ export const actions: ActionTree<State, any> = {
         ])
         const response = await this.$service.post(
             context,
-            '/google_oauth2/token',
+            GoogleURI.REQUEST_TOKEN,
             params
         )
         return response
