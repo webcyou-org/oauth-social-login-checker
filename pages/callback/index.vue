@@ -8,10 +8,10 @@
             {{ selectedProvider.name }}
         </h2>
 
-        <google-callBack
+        <provider-callBack
             v-if="isState('google')"
             :call-back-data="callBackQueryData"
-        ></google-callBack>
+        ></provider-callBack>
         <facebook-callBack
             v-if="isState('facebook')"
             :call-back-data="callBackQueryData"
@@ -27,15 +27,15 @@
 import Vue from 'vue'
 import Component from 'nuxt-class-component'
 
-import GoogleCallBack from '~/components/google/callback.vue'
 import FacebookCallBack from '~/components/facebook/callback.vue'
 import GithubCallBack from '~/components/github/callback.vue'
+import ProviderCallBack from '~/components/callback.component.vue'
 
 import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
 
 @Component({
     components: {
-        GoogleCallBack,
+        ProviderCallBack,
         FacebookCallBack,
         GithubCallBack
     }

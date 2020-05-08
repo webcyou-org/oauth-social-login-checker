@@ -1,6 +1,6 @@
 /**
- * actionsのメソッド名にnamespaceを付与したActionType objectを作成する
- * @param o actionsのメソッド名配列
+ * Creates an ActionType object with namespace attached to the name of the action method.
+ * @param o An array of method names for actions
  *          例) ['iniAlertMessageList', 'pushAlertMessage']
  * @param namespace module name
  * @return Action Type object

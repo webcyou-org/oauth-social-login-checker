@@ -2,7 +2,7 @@
   "name": "oauth-social-login-checker",
   "version": "1.0.0",
   "description": "OAuth Social Login Checker",
-  "author": "panicdragon",
+  "author": "daisuke.takayama",
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development PORT=3000 nuxt",

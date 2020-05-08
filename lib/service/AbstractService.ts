@@ -18,9 +18,10 @@ export abstract class AbstractService {
         this.app = args
     }
 
-    // fetch request parameterの準備
+    // Preparation fetch request parameter
     protected abstract prepareFetchParameter(requestParameter?: any): void
-    // request config 構築
+
+    // request config build
     protected abstract buildRequestConfig(rootState: any, requestParameter?: any): AxiosRequestConfig
 
     protected async fetch(
@@ -38,7 +39,7 @@ export abstract class AbstractService {
             delete requestParameter.params
         }
 
-        // NOTE: (ドキュメント)https://github.com/axios/axios#axiosrequestconfig-1
+        // NOTE: (Docs) https://github.com/axios/axios#axiosrequestconfig-1
         const response: AxiosResponse = await this.app.$axios
             .request(
                 Object.assign(
@@ -68,7 +69,7 @@ export abstract class AbstractService {
                 }
             )
 
-        // API呼び出しでエラーが発生しなかった場合
+        // If no error occurs in the API call.
         const { data } = response
 
         // status 200 && Return from Server ecode

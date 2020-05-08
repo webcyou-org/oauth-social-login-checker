@@ -5,31 +5,27 @@ import { Google } from '~/lib/class/provider/Google'
 import { Facebook } from '~/lib/class/provider/Facebook'
 import { GitHub } from '~/lib/class/provider/GitHub'
 import { Twitter } from '~/lib/class/provider/Twitter'
-
 import { ProviderMap } from '~/lib/config/provider_list'
-
-import { GoogleURI } from '~/lib/enum/end_point_list'
-
 import { actionsToActionTypes } from '~/lib/utility/actionTypes'
 
 // mutation type
 const INIT_OAUTH = 'INIT_OAUTH'
 const SET_OAUTH = 'SET_OAUTH'
 const UPDATE_OAUTH = 'UPDATE_OAUTH'
-
 const SET_PROVIDER = 'SET_PROVIDER'
 const UPDATE_PROVIDER = 'UPDATE_PROVIDER'
 const SET_SELECTED_PROVIDER = 'SET_SELECTED_PROVIDER'
 const RESET_SELECTED_PROVIDER = 'RESET_SELECTED_PROVIDER'
+const PROVIDER_NEXT_REQUEST = 'PROVIDER_NEXT_REQUEST'
 
 // action type
 export const ActionTypes = actionsToActionTypes([
-    'getOauth',
     'setProvider',
     'updateProvider',
     'googleRequestToken',
     'setSelectedProvider',
-    'resetSelectedProvider'
+    'resetSelectedProvider',
+    'providerRequest'
     ],
     'oAuthModule'
 )
@@ -46,30 +42,22 @@ export const state = (): { oauth: OAuth, google: Google, facebook: Facebook, git
 export type State = ReturnType<typeof state>
 
 export const actions: ActionTree<State, any> = {
-    async getOauth(context): Promise<void> {
-        // const response: { data: { oauth: OAuth } } = await this.$service.get(context, `/oauth/${id}`)
-        // context.commit(SET_OAUTH, response.data.oauth)
-    },
-
     async setProvider(context, data): Promise<void> {
         context.commit(SET_PROVIDER, data)
     },
+
     async updateProvider(context, data): Promise<void> {
         context.commit(UPDATE_PROVIDER, data)
     },
 
-    async googleRequestToken(context): Promise<void> {
-        const params = context.state.google.getPickRequest([
-            'code',
-            'client_id',
-            'client_secret',
-            'redirect_uri',
-            'grant_type'
-        ])
-        const response = await this.$service.post(
+    async providerRequest(context): Promise<void> {
+        const provider = context.state.selectedProvider
+        context.commit(PROVIDER_NEXT_REQUEST)
+        const $service: any = this.$service
+        const response = await $service[provider.requestMethod](
             context,
-            GoogleURI.REQUEST_TOKEN,
-            params
+            provider.requestURI,
+            provider.requestParams
         )
         return response
     },
@@ -106,5 +94,11 @@ export const mutations: MutationTree<State> = {
     },
     [RESET_SELECTED_PROVIDER](state): void {
         state.selectedProvider = null
+    },
+    [PROVIDER_NEXT_REQUEST](state): void {
+        const provider = state.selectedProvider
+        provider.requestStep = provider.requestStepList[0]
+        provider.requestStepHistoryList.push(provider.requestStepList[0])
+        provider.requestStepList.shift()
     }
 }
