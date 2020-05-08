@@ -19,14 +19,15 @@
                 {{ selectedProvider.name }}
             </h2>
             <provider-login
-                v-if="isSelectedProvider('Google')"
+                v-if="
+                    isSelectedProvider('Google') || isSelectedProvider('GitHub')
+                "
                 :provider-prop="selectedProvider"
             ></provider-login>
             <facebook-login
                 v-if="isSelectedProvider('Facebook')"
             ></facebook-login>
             <twitter-login v-if="isSelectedProvider('Twitter')"></twitter-login>
-            <github-login v-if="isSelectedProvider('GitHub')"></github-login>
         </div>
     </div>
 </template>
@@ -37,7 +38,6 @@ import Component from 'nuxt-class-component'
 
 import FacebookLogin from '~/components/facebook/login.vue'
 import TwitterLogin from '~/components/twitter/login.vue'
-import GithubLogin from '~/components/github/login.vue'
 import ProviderLogin from '~/components/login.component.vue'
 
 import { providerList } from '~/lib/config/provider_list'
@@ -48,7 +48,6 @@ import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
     components: {
         FacebookLogin,
         TwitterLogin,
-        GithubLogin,
         ProviderLogin
     }
 })

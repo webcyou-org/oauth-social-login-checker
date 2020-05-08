@@ -31,7 +31,7 @@
         </table>
         <ul class="btnList center">
             <li class="btn green large" @click="onClickRequest">
-                <a>Request</a>
+                <a>Login</a>
             </li>
         </ul>
     </div>

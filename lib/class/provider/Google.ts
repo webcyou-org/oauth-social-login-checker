@@ -49,7 +49,7 @@ export class Google extends Provider {
         return `${GoogleURI.LOGIN}?${this.getLoginQuery()}`
     }
 
-    get loginDisplayObject() {
+    get loginDisplayObject(): object {
         return {
             redirect_uri: this.redirectUri,
             response_type: this.responseType,
