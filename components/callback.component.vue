@@ -10,7 +10,7 @@
             <tbody>
                 <tr>
                     <td>Grant Type</td>
-                    <td>Openid Connect</td>
+                    <td>{{ provider.grantType }}</td>
                 </tr>
                 <tr>
                     <td>client_id</td>
@@ -87,6 +87,7 @@ export default class ProviderCallBack extends Vue {
         this.$store.dispatch(oAuthActionTypes.setSelectedProvider, {
             name: this.callBackData.state
         })
+        this.$store.dispatch(oAuthActionTypes.providerChangeRequest)
         this.provider = cloneDeep(this.selectedProvider)
     }
 
@@ -99,9 +100,11 @@ export default class ProviderCallBack extends Vue {
             oAuthActionTypes.updateProvider,
             this.provider
         )
+
         this.$store.dispatch(oAuthActionTypes.setSelectedProvider, {
             name: this.provider.name
         })
+
         await this.$store
             .dispatch(oAuthActionTypes.providerRequest)
             .then((response: any) => {
@@ -117,6 +120,8 @@ export default class ProviderCallBack extends Vue {
                     name: this.provider.name
                 })
             })
+
+        await this.$store.dispatch(oAuthActionTypes.providerChangeRequest)
         this.provider = cloneDeep(this.selectedProvider)
         this.$forceUpdate()
     }

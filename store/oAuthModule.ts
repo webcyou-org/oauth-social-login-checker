@@ -22,9 +22,9 @@ const PROVIDER_NEXT_REQUEST = 'PROVIDER_NEXT_REQUEST'
 export const ActionTypes = actionsToActionTypes([
     'setProvider',
     'updateProvider',
-    'googleRequestToken',
     'setSelectedProvider',
     'resetSelectedProvider',
+    'providerChangeRequest',
     'providerRequest'
     ],
     'oAuthModule'
@@ -52,7 +52,6 @@ export const actions: ActionTree<State, any> = {
 
     async providerRequest(context): Promise<void> {
         const provider = context.state.selectedProvider
-        context.commit(PROVIDER_NEXT_REQUEST)
         const $service: any = this.$service
         const response = await $service[provider.requestMethod](
             context,
@@ -60,6 +59,10 @@ export const actions: ActionTree<State, any> = {
             provider.requestParams
         )
         return response
+    },
+
+    async providerChangeRequest(context): Promise<void> {
+        context.commit(PROVIDER_NEXT_REQUEST)
     },
 
     setSelectedProvider(context, data): void {

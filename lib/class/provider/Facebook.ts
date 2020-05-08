@@ -8,14 +8,16 @@ import queryString from 'query-string'
 
 export class Facebook extends Provider {
     public oauth: OAuth
+    public data: any = null
 
     constructor(data?: any) {
-        if (!data) data = {}
         super(data)
+        if (!data) data = {}
 
         this.scope = data.scope || ''
         this.name = data.name || 'Facebook'
         this.state = data.state || 'facebook'
+        this.requestStepList = ['accessToken', 'verification', 'fetchUser']
         this.oauth = new OAuth()
     }
 
@@ -28,7 +30,11 @@ export class Facebook extends Provider {
             grant_type: this.grantType,
             response_type: this.responseType,
             scope: this.scope,
-            state: this.state
+            state: this.state,
+            access_token: this.access_token,
+            expires_in: this.expires_in,
+            token_type: this.token_type,
+            data: this.data
         }
     }
 
@@ -41,8 +47,71 @@ export class Facebook extends Provider {
         ])
     }
 
+    get callBackDisplayObject(): object {
+        return this.getPickRequest([
+            'code',
+            'state',
+            'redirect_uri',
+            'access_token',
+            'expires_in',
+            'token_type',
+            'data'
+        ])
+    }
+
+    get requestTokenParams() {
+        return this.getPickRequest([
+            'code',
+            'client_id',
+            'client_secret',
+            'redirect_uri'
+        ])
+    }
+
+    get verificationParams() {
+        return {
+            input_token: this.access_token,
+            access_token: `${this.clientId}|${this.clientSecret}`
+        }
+    }
+
+    get fetchUserParams() {
+        return {
+            fields: 'name,birthday,email,hometown',
+            access_token: this.access_token
+        }
+    }
+
     get loginURI(): string {
         return `${FacebookURI.LOGIN}?${this.getLoginQuery()}`
+    }
+
+    get requestParams() {
+        if (this.requestStep === 'accessToken') {
+            return this.requestTokenParams
+        }
+        if (this.requestStep === 'verification') {
+            return this.verificationParams
+        }
+        if (this.requestStep === 'fetchUser') {
+            return this.fetchUserParams
+        }
+    }
+
+    get requestURI() {
+        if (this.requestStep === 'accessToken') {
+            return FacebookURI.ACCESS_TOKEN
+        }
+        if (this.requestStep === 'verification') {
+            return FacebookURI.VERIFICATION
+        }
+        if (this.requestStep === 'fetchUser') {
+            return `${FacebookURI.GRAPH_API}${this.data.user_id}/`
+        }
+    }
+
+    get requestMethod() {
+        return 'get'
     }
 
     getLoginQuery() {
@@ -56,5 +125,9 @@ export class Facebook extends Provider {
 
     getPickRequest(pickList: string[]): object {
         return pick(this.toRequest, pickList)
+    }
+
+    get isSetParams(): boolean {
+        return this.requestStep !== 'fetchUser'
     }
 }

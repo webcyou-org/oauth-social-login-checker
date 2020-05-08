@@ -10,6 +10,8 @@ export enum GitHubURI {
 }
 
 export enum FacebookURI {
+    GRAPH_API = '/facebook/',
     LOGIN = 'https://www.facebook.com/dialog/oauth',
-    ACCESS_TOKEN = '/github/login/oauth/access_token'
+    ACCESS_TOKEN = '/facebook/v6.0/oauth/access_token',
+    VERIFICATION = '/facebook/debug_token'
 }
