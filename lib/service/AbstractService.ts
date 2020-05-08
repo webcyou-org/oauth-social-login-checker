@@ -44,7 +44,7 @@ export abstract class AbstractService {
             .request(
                 Object.assign(
                     { method: type, params, timeout: 60000 },
-                    this.buildRequestConfig(context.rootState, { uri, data: requestParameter })
+                    this.buildRequestConfig(context.rootState, { uri, data: requestParameter, headers: requestParameter.headers })
                 )
             )
             .catch(
@@ -72,8 +72,9 @@ export abstract class AbstractService {
         // If no error occurs in the API call.
         const { data } = response
 
-        // status 200 && Return from Server ecode
-        if (data && data.ecode > 0) {
+        // status 200 && Return from Response error
+        // GitHub etc..
+        if (data && data.error) {
             // hide loading
             if (this.app.store) {
                 this.app.store.dispatch(LoadingActionTypes.hideLoading)

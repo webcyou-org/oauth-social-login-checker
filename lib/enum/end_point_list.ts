@@ -5,7 +5,8 @@ export enum GoogleURI {
 
 export enum GitHubURI {
     LOGIN = 'https://github.com/login/oauth/authorize',
-    ACCESS_TOKEN = '/github/login/oauth/access_token'
+    ACCESS_TOKEN = '/github/login/oauth/access_token',
+    FETCH_USER = '/github_api/user'
 }
 
 export enum FacebookURI {

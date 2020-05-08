@@ -3,28 +3,27 @@ import { OAuth } from '../OAuth'
 
 import { GitHubURI } from '~/lib/enum/end_point_list'
 
-import { pick } from 'lodash'
+import { pick, merge } from 'lodash'
 import queryString from 'query-string'
 
 export class GitHub extends Provider {
     public oauth: OAuth
-    public code: string
     public allowSignup: string
 
     constructor(data?: any) {
-        if (!data) data = {}
         super(data)
+        if (!data) data = {}
 
-        this.code = data.code || ''
         this.scope = data.scope || 'user'
         this.name = data.name || 'GitHub'
         this.state = data.state || 'github'
         this.allowSignup = data.allow_signup || ''
+        this.requestStepList = ['accessToken', 'fetchUser']
         this.oauth = new OAuth()
     }
 
     get toRequest(): any {
-        return {
+        return  {
             code: this.code,
             client_id: this.clientId,
             client_secret: this.clientSecret,
@@ -32,7 +31,10 @@ export class GitHub extends Provider {
             grant_type: this.grantType,
             scope: this.scope,
             state: this.state,
-            allow_signup: this.allowSignup
+            allow_signup: this.allowSignup,
+            access_token: this.access_token,
+            token_type: this.token_type,
+            id_token: this.id_token
         }
     }
 
@@ -45,8 +47,68 @@ export class GitHub extends Provider {
         ])
     }
 
+    get callBackDisplayObject(): object {
+        return this.getPickRequest([
+            'code',
+            'scope',
+            'state',
+            'access_token',
+            'expires_in',
+            'token_type'
+        ])
+    }
+
+    get requestTokenParams() {
+        const requestParams = this.getPickRequest([
+            'code',
+            'client_id',
+            'client_secret'
+        ])
+        return merge(requestParams, {
+            headers: {
+                'Content-Type': 'application/json',
+                accept: 'application/json'
+            }
+        })
+    }
+
+    get fetchUserParams() {
+        return {
+            headers: {
+                Authorization: `token ${this.access_token}`
+            }
+        }
+    }
+
     get loginURI(): string {
         return `${GitHubURI.LOGIN}?${this.getLoginQuery()}`
+    }
+
+    get requestParams() {
+        if (this.requestStep === 'accessToken') {
+            return this.requestTokenParams
+        }
+        if (this.requestStep === 'fetchUser') {
+            return this.fetchUserParams
+        }
+    }
+
+    get requestURI() {
+        if (this.requestStep === 'accessToken') {
+            return GitHubURI.ACCESS_TOKEN
+        }
+        if (this.requestStep === 'fetchUser') {
+            return GitHubURI.FETCH_USER
+        }
+    }
+
+    get requestMethod() {
+        if (this.requestStep === 'accessToken') {
+            return 'post'
+        }
+        if (this.requestStep === 'fetchUser') {
+            return 'post'
+        }
     }
 
     getLoginQuery() {
@@ -60,5 +122,9 @@ export class GitHub extends Provider {
 
     getPickRequest(pickList: string[]): object {
         return pick(this.toRequest, pickList)
+    }
+
+    get isSetParams(): boolean {
+        return this.requestStep !== 'accessToken'
     }
 }

@@ -9,7 +9,17 @@ export class Provider {
     public grantType: string
     public scope: string
     public state: string
+    public code: string
     public nonce: string
+    public requestStep: string = ''
+    public requestStepList: string[] = ['requestToken']
+    public requestStepHistoryList: string[] = []
+
+    // response
+    public access_token: string | null = null
+    public expires_in: string | null = null
+    public token_type: string | null = null
+    public id_token: string | null = null
 
     constructor(data?: any) {
         if (!data) data = {}
@@ -22,8 +32,7 @@ export class Provider {
         this.grantType = data.grantType || GRANT.TYPE.AUTHORIZATION_CODE.VALUE
         this.scope = data.scope || ''
         this.state = data.state || ''
+        this.code = data.code || ''
         this.nonce = data.nonce || ''
     }
-
-    login() {}
 }

@@ -8,29 +8,16 @@ import queryString from 'query-string'
 
 export class Google extends Provider {
     public oauth: OAuth
-    public code: string
-    public nonce: string
     public authuser: string
     public prompt: string
-    public requestStep: string = ''
-    public requestStepList: string[] = ['requestToken']
-    public requestStepHistoryList: string[] = []
-
-    // response
-    public access_token: string | null = null
-    public expires_in: string | null = null
-    public token_type: string | null = null
-    public id_token: string | null = null
 
     constructor(data?: any) {
         super(data)
         if (!data) data = {}
 
-        this.code = data.code || ''
         this.scope = data.scope || 'openid profile'
         this.name = data.name || 'Google'
         this.state = data.state || 'google'
-        this.nonce = data.nonce || ''
         this.authuser = data.authuser || ''
         this.prompt = data.prompt || ''
         this.oauth = new OAuth()
@@ -126,5 +113,9 @@ export class Google extends Provider {
 
     getPickRequest(pickList: string[]): object {
         return pick(this.toRequest, pickList)
+    }
+
+    get isSetParams(): boolean {
+        return this.requestStep !== 'requestToken'
     }
 }

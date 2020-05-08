@@ -9,8 +9,8 @@ export interface ServerError extends CustomError {
 export class ServerError extends CustomError {
     readonly name = 'ServerError'
 
-    constructor(data: { ecode: number; message: string }, status = 200) {
-        super(data.message, status)
+    constructor(data: { ecode: number; message: string; error: string }, status = 200) {
+        super(data.message || data.error, status)
 
         if (Error.captureStackTrace) {
             Error.captureStackTrace(this, ServerError)

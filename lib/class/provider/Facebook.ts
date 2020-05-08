@@ -8,13 +8,11 @@ import queryString from 'query-string'
 
 export class Facebook extends Provider {
     public oauth: OAuth
-    public code: string
 
     constructor(data?: any) {
         if (!data) data = {}
         super(data)
 
-        this.code = data.code || ''
         this.scope = data.scope || ''
         this.name = data.name || 'Facebook'
         this.state = data.state || 'facebook'

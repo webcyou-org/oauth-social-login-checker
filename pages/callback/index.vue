@@ -9,17 +9,13 @@
         </h2>
 
         <provider-callBack
-            v-if="isState('google')"
+            v-if="isState('google') || isState('github')"
             :call-back-data="callBackQueryData"
         ></provider-callBack>
         <facebook-callBack
             v-if="isState('facebook')"
             :call-back-data="callBackQueryData"
         ></facebook-callBack>
-        <github-callBack
-            v-if="isState('github')"
-            :call-back-data="callBackQueryData"
-        ></github-callBack>
     </div>
 </template>
 
@@ -28,7 +24,6 @@ import Vue from 'vue'
 import Component from 'nuxt-class-component'
 
 import FacebookCallBack from '~/components/facebook/callback.vue'
-import GithubCallBack from '~/components/github/callback.vue'
 import ProviderCallBack from '~/components/callback.component.vue'
 
 import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
@@ -36,8 +31,7 @@ import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
 @Component({
     components: {
         ProviderCallBack,
-        FacebookCallBack,
-        GithubCallBack
+        FacebookCallBack
     }
 })
 export default class CallBack extends Vue {

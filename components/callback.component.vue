@@ -41,12 +41,26 @@
                         <td>{{ value }}</td>
                     </tr>
                 </template>
+                <tr
+                    v-for="(value, name, index) in responseData"
+                    :key="`response${index}`"
+                >
+                    <td>{{ name }}</td>
+                    <td>{{ value }}</td>
+                </tr>
             </tbody>
         </table>
 
         <ul class="btnList center">
-            <li class="btn green large" @click="onClickRequest">
+            <li
+                v-if="provider.isSetParams"
+                class="btn green large"
+                @click="onClickRequest"
+            >
                 <a>Request AccessToken</a>
+            </li>
+            <li v-else class="btn green large" @click="onClickFetchData">
+                <a>Fetch Data</a>
             </li>
         </ul>
     </div>
@@ -62,6 +76,7 @@ export default class ProviderCallBack extends Vue {
     @Prop() readonly callBackData: any | undefined
 
     provider: any
+    responseData: any = null
 
     created() {
         const callBackData = merge(
@@ -103,6 +118,22 @@ export default class ProviderCallBack extends Vue {
                 })
             })
         this.provider = cloneDeep(this.selectedProvider)
+        this.$forceUpdate()
+    }
+
+    async onClickFetchData(): Promise<void> {
+        await this.$store.dispatch(
+            oAuthActionTypes.updateProvider,
+            this.provider
+        )
+        this.$store.dispatch(oAuthActionTypes.setSelectedProvider, {
+            name: this.provider.name
+        })
+        await this.$store
+            .dispatch(oAuthActionTypes.providerRequest)
+            .then((response: any) => {
+                this.responseData = response
+            })
         this.$forceUpdate()
     }
 }

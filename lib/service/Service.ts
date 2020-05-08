@@ -11,12 +11,15 @@ export default class Service extends AbstractService {
         }
     }
 
-    protected buildRequestConfig(rootState: any, requestParameter: { uri: string; data: any; token: any }): AxiosRequestConfig {
-        const { uri, data, token } = requestParameter
+    protected buildRequestConfig(rootState: any, requestParameter: { uri: string; data: any; headers: any }): AxiosRequestConfig {
+        const { uri, data, headers } = requestParameter
+        if (data.headers) {
+            delete data.headers
+        }
         return {
             url: uri,
             data,
-            headers: { Authorization: token }
+            headers
         }
     }
 }

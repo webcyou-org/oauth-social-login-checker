@@ -5,13 +5,11 @@ import { pick } from 'lodash'
 
 export class Twitter extends Provider {
     public oauth: OAuth
-    public code: string
 
     constructor(data?: any) {
         if (!data) data = {}
         super(data)
 
-        this.code = data.code || ''
         this.scope = data.scope || ''
         this.name = data.name || 'Twitter'
         this.oauth = new OAuth()
