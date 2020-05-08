@@ -49,6 +49,16 @@ export class Google extends Provider {
         return `${GoogleURI.LOGIN}?${this.getLoginQuery()}`
     }
 
+    get loginDisplayObject() {
+        return {
+            redirect_uri: this.redirectUri,
+            response_type: this.responseType,
+            scope: this.scope,
+            state: this.state,
+            nonce: ''
+        }
+    }
+
     getPickRequest(pickList: string[]): object {
         return pick(this.toRequest, pickList)
     }

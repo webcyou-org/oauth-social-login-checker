@@ -20,25 +20,12 @@
                         </p>
                     </td>
                 </tr>
-                <tr>
-                    <td>redirect_uri</td>
-                    <td>{{ provider.redirectUri }}</td>
-                </tr>
-                <tr>
-                    <td>response_type</td>
-                    <td>{{ provider.responseType }}</td>
-                </tr>
-                <tr>
-                    <td>scope</td>
-                    <td>{{ provider.scope }}</td>
-                </tr>
-                <tr>
-                    <td>state</td>
-                    <td>{{ provider.state }}</td>
-                </tr>
-                <tr>
-                    <td>nonce</td>
-                    <td></td>
+                <tr
+                    v-for="(value, name, index) in provider.loginDisplayObject"
+                    :key="index"
+                >
+                    <td>{{ name }}</td>
+                    <td>{{ value }}</td>
                 </tr>
             </tbody>
         </table>
