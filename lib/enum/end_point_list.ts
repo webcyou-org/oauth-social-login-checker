@@ -7,3 +7,8 @@ export enum GitHubURI {
     LOGIN = 'https://github.com/login/oauth/authorize',
     ACCESS_TOKEN = '/github/login/oauth/access_token'
 }
+
+export enum FacebookURI {
+    LOGIN = 'https://www.facebook.com/dialog/oauth',
+    ACCESS_TOKEN = '/github/login/oauth/access_token'
+}

@@ -9,6 +9,7 @@ import queryString from 'query-string'
 export class Google extends Provider {
     public oauth: OAuth
     public code: string
+    public nonce: string
 
     constructor(data?: any) {
         if (!data) data = {}
@@ -18,6 +19,7 @@ export class Google extends Provider {
         this.scope = data.scope || 'openid profile'
         this.name = data.name || 'Google'
         this.state = data.state || 'google'
+        this.nonce = data.nonce || ''
         this.oauth = new OAuth()
     }
 
@@ -27,10 +29,11 @@ export class Google extends Provider {
             client_id: this.clientId,
             client_secret: this.clientSecret,
             redirect_uri: this.redirectUri,
-            grant_type: this.grantType,
             response_type: this.responseType,
+            grant_type: this.grantType,
             scope: this.scope,
-            state: this.state
+            state: this.state,
+            nonce: this.nonce
         }
     }
 
@@ -50,13 +53,13 @@ export class Google extends Provider {
     }
 
     get loginDisplayObject(): object {
-        return {
-            redirect_uri: this.redirectUri,
-            response_type: this.responseType,
-            scope: this.scope,
-            state: this.state,
-            nonce: ''
-        }
+        return this.getPickRequest([
+            'redirect_uri',
+            'response_type',
+            'scope',
+            'state',
+            'nonce'
+        ])
     }
 
     getPickRequest(pickList: string[]): object {

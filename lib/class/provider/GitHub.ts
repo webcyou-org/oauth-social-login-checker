@@ -21,8 +21,6 @@ export class GitHub extends Provider {
         this.state = data.state || 'github'
         this.allowSignup = data.allow_signup || ''
         this.oauth = new OAuth()
-
-        console.log(this)
     }
 
     get toRequest(): any {
@@ -33,17 +31,18 @@ export class GitHub extends Provider {
             redirect_uri: this.redirectUri,
             grant_type: this.grantType,
             scope: this.scope,
-            state: this.state
+            state: this.state,
+            allow_signup: this.allowSignup
         }
     }
 
     get loginDisplayObject(): object {
-        return {
-            redirect_uri: this.redirectUri,
-            scope: this.scope,
-            state: this.state,
-            allow_signup: this.allowSignup
-        }
+        return this.getPickRequest([
+            'redirect_uri',
+            'scope',
+            'state',
+            'allow_signup'
+        ])
     }
 
     get loginURI(): string {
