@@ -61,8 +61,4 @@ export class GitHub extends Provider {
     getPickRequest(pickList: string[]): object {
         return pick(this.toRequest, pickList)
     }
-
-    login() {
-        location.href = this.loginURI
-    }
 }

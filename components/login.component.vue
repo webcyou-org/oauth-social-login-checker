@@ -52,10 +52,7 @@ export default class ProviderLogin extends Vue {
             oAuthActionTypes.updateProvider,
             this.provider
         )
-        await this.$store.dispatch(
-            oAuthActionTypes.providerLogin,
-            this.provider
-        )
+        location.href = this.provider.loginURI
     }
 }
 </script>
