@@ -125,6 +125,6 @@ export class GitHub extends Provider {
     }
 
     get isSetParams(): boolean {
-        return this.requestStep !== 'accessToken'
+        return this.requestStep !== 'fetchUser'
     }
 }
