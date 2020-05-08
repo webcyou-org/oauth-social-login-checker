@@ -83,10 +83,10 @@ export default class ProviderCallBack extends Vue {
             { name: this.callBackData.state },
             this.callBackData
         )
-        this.$store.dispatch(oAuthActionTypes.setProvider, callBackData)
         this.$store.dispatch(oAuthActionTypes.setSelectedProvider, {
             name: this.callBackData.state
         })
+        this.updateProvider(callBackData)
         this.$store.dispatch(oAuthActionTypes.providerChangeRequest)
         this.provider = cloneDeep(this.selectedProvider)
     }
@@ -96,15 +96,7 @@ export default class ProviderCallBack extends Vue {
     }
 
     async onClickRequest(): Promise<void> {
-        await this.$store.dispatch(
-            oAuthActionTypes.updateProvider,
-            this.provider
-        )
-
-        this.$store.dispatch(oAuthActionTypes.setSelectedProvider, {
-            name: this.provider.name
-        })
-
+        await this.updateProvider(this.provider)
         await this.$store
             .dispatch(oAuthActionTypes.providerRequest)
             .then((response: any) => {
@@ -112,34 +104,27 @@ export default class ProviderCallBack extends Vue {
                     { name: this.provider.name },
                     response
                 )
-                this.$store.dispatch(
-                    oAuthActionTypes.updateProvider,
-                    responseData
-                )
-                this.$store.dispatch(oAuthActionTypes.setSelectedProvider, {
-                    name: this.provider.name
-                })
+                this.updateProvider(responseData)
             })
-
         await this.$store.dispatch(oAuthActionTypes.providerChangeRequest)
         this.provider = cloneDeep(this.selectedProvider)
         this.$forceUpdate()
     }
 
     async onClickFetchData(): Promise<void> {
-        await this.$store.dispatch(
-            oAuthActionTypes.updateProvider,
-            this.provider
-        )
-        this.$store.dispatch(oAuthActionTypes.setSelectedProvider, {
-            name: this.provider.name
-        })
+        await this.updateProvider(this.provider)
         await this.$store
             .dispatch(oAuthActionTypes.providerRequest)
             .then((response: any) => {
                 this.responseData = response
             })
-        this.$forceUpdate()
+    }
+
+    async updateProvider(updateData: any): Promise<void> {
+        await this.$store.dispatch(oAuthActionTypes.updateProvider, updateData)
+        this.$store.dispatch(oAuthActionTypes.setSelectedProvider, {
+            name: this.provider.name
+        })
     }
 }
 </script>

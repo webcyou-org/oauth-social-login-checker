@@ -1,4 +1,4 @@
-import { merge } from 'lodash'
+import { merge, omit } from 'lodash'
 import { ActionTree, MutationTree } from 'vuex/types/index'
 import { OAuth } from '~/lib/class/OAuth'
 import { Google } from '~/lib/class/provider/Google'
@@ -86,11 +86,13 @@ export const mutations: MutationTree<State> = {
     },
     [SET_PROVIDER](state: any, payload: any): void {
         const lowerCaseProviderName = payload.name.toLowerCase()
-        state[lowerCaseProviderName] = new ProviderMap[lowerCaseProviderName](payload)
+        const params = omit(payload, ['name'])
+        state[lowerCaseProviderName] = new ProviderMap[lowerCaseProviderName](params)
     },
     [UPDATE_PROVIDER](state: any, payload): void {
         const lowerCaseProviderName = payload.name.toLowerCase()
-        state[lowerCaseProviderName] = merge(state[lowerCaseProviderName], payload)
+        const params = omit(payload, ['name'])
+        state[lowerCaseProviderName] = merge(state[lowerCaseProviderName], params)
     },
     [SET_SELECTED_PROVIDER](state: any, payload): void {
         state.selectedProvider = state[payload.name.toLowerCase()]
