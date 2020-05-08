@@ -27,8 +27,8 @@ export const ActionTypes = actionsToActionTypes([
     'getOauth',
     'setProvider',
     'updateProvider',
-    'googleLogin',
     'googleRequestToken',
+    'providerLogin',
     'setSelectedProvider',
     'resetSelectedProvider'
     ],
@@ -59,9 +59,9 @@ export const actions: ActionTree<State, any> = {
         context.commit(UPDATE_PROVIDER, data)
     },
 
-    async googleLogin(context): Promise<void> {
-        const params = context.state.google.getLoginQuery()
-        location.href = `${GoogleURI.LOGIN}?${params}`
+    async providerLogin(context: any, provider): Promise<void> {
+        const lowerCaseProviderName = provider.name.toLowerCase()
+        context.state[lowerCaseProviderName].login()
     },
 
     async googleRequestToken(context): Promise<void> {

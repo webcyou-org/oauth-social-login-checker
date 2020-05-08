@@ -1,6 +1,8 @@
 import { Provider } from '../Provider'
 import { OAuth } from '../OAuth'
 
+import { GoogleURI } from '~/lib/enum/end_point_list'
+
 import { pick } from 'lodash'
 import queryString from 'query-string'
 
@@ -43,7 +45,15 @@ export class Google extends Provider {
         return queryString.stringify(params)
     }
 
+    get loginURI(): string {
+        return `${GoogleURI.LOGIN}?${this.getLoginQuery()}`
+    }
+
     getPickRequest(pickList: string[]): object {
         return pick(this.toRequest, pickList)
+    }
+
+    login() {
+        location.href = this.loginURI
     }
 }

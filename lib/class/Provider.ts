@@ -24,4 +24,6 @@ export class Provider {
         this.state = data.state || ''
         this.nonce = data.nonce || ''
     }
+
+    login() {}
 }
