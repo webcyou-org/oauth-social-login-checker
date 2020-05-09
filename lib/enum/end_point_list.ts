@@ -15,3 +15,11 @@ export enum FacebookURI {
     ACCESS_TOKEN = '/facebook/v6.0/oauth/access_token',
     VERIFICATION = '/facebook/debug_token'
 }
+
+export enum TwitterURI {
+    DOMAIN = 'https://api.twitter.com',
+    REQUEST_TOKEN = '/twitter_api/oauth/request_token',
+    LOGIN = 'https://api.twitter.com/oauth/authenticate',
+    ACCESS_TOKEN = '/twitter_api/oauth/access_token',
+    VERIFY_CREDENTIALS = '/twitter_api/1.1/account/verify_credentials.json'
+}

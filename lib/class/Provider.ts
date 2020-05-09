@@ -4,6 +4,8 @@ export class Provider {
     public name: string
     public clientId: string
     public clientSecret: string
+    public consumerKey: string
+    public consumerSecret: string
     public redirectUri: string
     public responseType: string
     public grantType: string
@@ -27,6 +29,8 @@ export class Provider {
         this.name = data.name || ''
         this.clientId = data.client_id || ''
         this.clientSecret = data.client_secret || ''
+        this.consumerKey = data.consumer_key || ''
+        this.consumerSecret = data.consumer_secret || ''
         this.redirectUri = data.redirect_uri || 'http://localhost:3000/callback'
         this.responseType = data.response_type || 'code'
         this.grantType = data.grantType || GRANT.TYPE.AUTHORIZATION_CODE.VALUE
@@ -34,5 +38,9 @@ export class Provider {
         this.state = data.state || ''
         this.code = data.code || ''
         this.nonce = data.nonce || ''
+    }
+
+    isRequestStep(step: string): boolean {
+        return this.requestStep === step
     }
 }

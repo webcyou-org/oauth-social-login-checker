@@ -23,7 +23,10 @@
                 v-if="!isSelectedProvider('Twitter')"
                 :provider-prop="selectedProvider"
             ></provider-login>
-            <twitter-login v-if="isSelectedProvider('Twitter')"></twitter-login>
+            <provider-oAuth1-login
+                v-else
+                :provider-prop="selectedProvider"
+            ></provider-oAuth1-login>
         </div>
     </div>
 </template>
@@ -33,7 +36,8 @@ import Vue from 'vue'
 import Component from 'nuxt-class-component'
 
 import ProviderLogin from '~/components/login.component.vue'
-import TwitterLogin from '~/components/twitter/login.vue'
+import ProviderOAuth1Login from '~/components/login.1_0.component.vue'
+
 import SaveBox from '~/components/common/save-box.component.vue'
 import { providerList } from '~/lib/config/provider_list'
 import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
@@ -42,7 +46,7 @@ import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
     components: {
         SaveBox,
         ProviderLogin,
-        TwitterLogin
+        ProviderOAuth1Login
     }
 })
 export default class Index extends Vue {

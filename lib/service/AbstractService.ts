@@ -34,7 +34,6 @@ export abstract class AbstractService {
 
         if (requestParameter) {
             this.prepareFetchParameter(requestParameter)
-
             params = requestParameter.params
             delete requestParameter.params
         }
@@ -85,8 +84,12 @@ export abstract class AbstractService {
     }
 
     public get(context: ActionContext<any, any>, uri: string, params?: any): Promise<any> {
+        const headers = params.headers ? params.headers : null
+        delete params.headers
+
         const data = {
-            params
+            params,
+            headers
         }
         return this.fetch(context, 'get', uri, data)
     }
