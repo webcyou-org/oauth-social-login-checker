@@ -62,4 +62,20 @@ html {
 .btn {
     font-weight: bold;
 }
+.box.saveBox {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    .text {
+        font-size: 15px;
+        font-weight: bold;
+        text-align: center;
+    }
+}
+.list.saveSelectList {
+    display: flex;
+    & > li + li {
+        margin-left: 10px;
+    }
+}
 </style>

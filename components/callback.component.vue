@@ -5,7 +5,6 @@
                 <tr>
                     <th style="width: 20%">name</th>
                     <th>value</th>
-                    <th style="width: 20%">option</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,7 +20,6 @@
                             <input v-model="provider.clientId" type="text" />
                         </p>
                     </td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td>client_secret</td>
@@ -33,7 +31,6 @@
                             />
                         </p>
                     </td>
-                    <td></td>
                 </tr>
                 <template
                     v-for="(value,
@@ -43,7 +40,6 @@
                     <tr v-if="value !== null" :key="index">
                         <td>{{ name }}</td>
                         <td>{{ value }}</td>
-                        <td></td>
                     </tr>
                 </template>
                 <tr
@@ -52,7 +48,6 @@
                 >
                     <td>{{ name }}</td>
                     <td>{{ value }}</td>
-                    <td></td>
                 </tr>
             </tbody>
         </table>

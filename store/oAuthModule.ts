@@ -9,9 +9,6 @@ import { ProviderMap } from '~/lib/config/provider_list'
 import { actionsToActionTypes } from '~/lib/utility/actionTypes'
 
 // mutation type
-const INIT_OAUTH = 'INIT_OAUTH'
-const SET_OAUTH = 'SET_OAUTH'
-const UPDATE_OAUTH = 'UPDATE_OAUTH'
 const SET_PROVIDER = 'SET_PROVIDER'
 const UPDATE_PROVIDER = 'UPDATE_PROVIDER'
 const SET_SELECTED_PROVIDER = 'SET_SELECTED_PROVIDER'
@@ -75,15 +72,6 @@ export const actions: ActionTree<State, any> = {
 }
 
 export const mutations: MutationTree<State> = {
-    [INIT_OAUTH](state): void {
-        state.oauth = new OAuth()
-    },
-    [SET_OAUTH](state, payload): void {
-        state.oauth = new OAuth(payload)
-    },
-    [UPDATE_OAUTH](state, payload): void {
-        state.oauth = merge(state.oauth, payload)
-    },
     [SET_PROVIDER](state: any, payload: any): void {
         const lowerCaseProviderName = payload.name.toLowerCase()
         const params = omit(payload, ['name'])

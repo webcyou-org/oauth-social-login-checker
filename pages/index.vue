@@ -18,6 +18,7 @@
                 ></span>
                 {{ selectedProvider.name }}
             </h2>
+            <save-box></save-box>
             <provider-login
                 v-if="!isSelectedProvider('Twitter')"
                 :provider-prop="selectedProvider"
@@ -33,11 +34,13 @@ import Component from 'nuxt-class-component'
 
 import ProviderLogin from '~/components/login.component.vue'
 import TwitterLogin from '~/components/twitter/login.vue'
+import SaveBox from '~/components/common/save-box.component.vue'
 import { providerList } from '~/lib/config/provider_list'
 import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
 
 @Component({
     components: {
+        SaveBox,
         ProviderLogin,
         TwitterLogin
     }
