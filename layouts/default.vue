@@ -31,7 +31,7 @@ export default class Index extends Vue {
     }
 }
 </script>
-<style>
+<style lang="scss">
 html {
     font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
         'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -53,5 +53,13 @@ html {
 
 .title.header {
     cursor: pointer;
+}
+.table {
+    td {
+        word-break: break-all;
+    }
+}
+.btn {
+    font-weight: bold;
 }
 </style>

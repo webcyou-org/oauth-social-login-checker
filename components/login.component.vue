@@ -3,14 +3,16 @@
         <table class="table mt-20 mb-50">
             <thead>
                 <tr>
-                    <th>name</th>
+                    <th style="width: 20%">name</th>
                     <th>value</th>
+                    <th style="width: 20%">option</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>Grant Type</td>
                     <td>Authorization Code</td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td>client_id</td>
@@ -19,6 +21,7 @@
                             <input v-model="provider.clientId" type="text" />
                         </p>
                     </td>
+                    <td></td>
                 </tr>
                 <tr
                     v-for="(value, name, index) in provider.loginDisplayObject"
@@ -26,6 +29,7 @@
                 >
                     <td>{{ name }}</td>
                     <td>{{ value }}</td>
+                    <td></td>
                 </tr>
             </tbody>
         </table>
