@@ -21,5 +21,6 @@ export enum TwitterURI {
     REQUEST_TOKEN = '/twitter_api/oauth/request_token',
     LOGIN = 'https://api.twitter.com/oauth/authenticate',
     ACCESS_TOKEN = '/twitter_api/oauth/access_token',
-    VERIFY_CREDENTIALS = '/twitter_api/1.1/account/verify_credentials.json'
+    VERIFY_CREDENTIALS = '/twitter_api/1.1/account/verify_credentials.json',
+    FETCH_USER = 'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true&skip_status=true&include_entities=false'
 }

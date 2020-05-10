@@ -8,7 +8,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <tr v-if="provider.grantType">
                     <td>Grant Type</td>
                     <td>{{ provider.grantType }}</td>
                     <td></td>
@@ -18,19 +18,19 @@
                     <td>OAuth 1.0</td>
                 </tr>
                 <tr>
-                    <td>client_id</td>
+                    <td>Consumer Key</td>
                     <td>
                         <p class="input long">
-                            <input v-model="provider.clientId" type="text" />
+                            <input v-model="provider.consumerKey" type="text" />
                         </p>
                     </td>
                 </tr>
                 <tr>
-                    <td>client_secret</td>
+                    <td>Consumer Secret</td>
                     <td>
                         <p class="input long">
                             <input
-                                v-model="provider.clientSecret"
+                                v-model="provider.consumerSecret"
                                 type="text"
                             />
                         </p>
@@ -77,7 +77,7 @@ import { merge, cloneDeep } from 'lodash'
 import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
 
 @Component
-export default class ProviderCallBack extends Vue {
+export default class ProviderCallBack1 extends Vue {
     @Prop() readonly callBackData: any | undefined
 
     provider: any
@@ -85,11 +85,11 @@ export default class ProviderCallBack extends Vue {
 
     created() {
         const callBackData = merge(
-            { name: this.callBackData.state },
+            { name: this.callBackData.name },
             this.callBackData
         )
         this.$store.dispatch(oAuthActionTypes.setSelectedProvider, {
-            name: this.callBackData.state
+            name: this.callBackData.name
         })
         this.updateProvider(callBackData)
         this.$store.dispatch(oAuthActionTypes.providerChangeRequest)

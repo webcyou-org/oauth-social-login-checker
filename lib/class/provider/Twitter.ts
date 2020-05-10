@@ -11,6 +11,7 @@ export class Twitter extends Provider {
     public oauth_callback_confirmed: any = null
     public oauth_token: any = null
     public oauth_token_secret: any = null
+    public oauth_verifier: any = null
 
     constructor(data?: any) {
         super(data)
@@ -18,7 +19,7 @@ export class Twitter extends Provider {
 
         this.scope = data.scope || ''
         this.name = data.name || 'Twitter'
-        this.requestStepList =  data.requestStepList || ['accessToken']
+        this.requestStepList =  data.requestStepList || ['fetchUser']
         this.redirectUri = data.redirect_uri || 'http://localhost:3000/callback/twitter'
         this.oauth = new OAuth()
     }
@@ -32,7 +33,8 @@ export class Twitter extends Provider {
             grant_type: this.grantType,
             oauth_callback_confirmed: this.oauth_callback_confirmed,
             oauth_token: this.oauth_token,
-            oauth_token_secret: this.oauth_token_secret
+            oauth_token_secret: this.oauth_token_secret,
+            oauth_verifier: this.oauth_verifier
         }
     }
 
@@ -47,6 +49,13 @@ export class Twitter extends Provider {
             'oauth_callback_confirmed',
             'oauth_token',
             'oauth_token_secret'
+        ])
+    }
+
+    get callBackDisplayObject(): object {
+        return this.getPickRequest([
+            'oauth_token',
+            'oauth_verifier'
         ])
     }
 
@@ -67,13 +76,46 @@ export class Twitter extends Provider {
         }
     }
 
+    get fetchUserParams() {
+        const parameters: any = this.oauth.getOAuth1Params({
+            oauth_consumer_key: this.consumerKey,
+            oauth_token: this.oauth_token
+        })
+
+        const oAuthSignature = this.oauth.getOAuth1Signature({
+            url: TwitterURI.FETCH_USER,
+            consumerSecret: this.consumerSecret,
+        }, parameters, this.oauth_verifier)
+
+        console.log(parameters)
+
+        return {
+            headers: {
+                Authorization: `OAuth oauth_consumer_key="${this.consumerKey}",oauth_token="${this.oauth_token}",oauth_signature_method="HMAC-SHA1",oauth_timestamp="${parameters.oauth_timestamp}",oauth_nonce="${parameters.oauth_nonce}",oauth_version="1.0",oauth_signature="${oAuthSignature}"`
+            }
+        }
+    }
+
+    get accessTokenParams() {
+        return {
+            oauth_token: this.oauth_token,
+            oauth_verifier: this.oauth_verifier
+        }
+    }
+
     get loginURI(): string {
-        return `${TwitterURI.DOMAIN}/oauth/authenticate?oauth_token=${this.oauth_token}&oauth_callback=http%3A%2F%2Flocalhost%3A3000%2Fcallback`
+        return `${TwitterURI.LOGIN}?oauth_token=${this.oauth_token}&oauth_callback=http%3A%2F%2Flocalhost%3A3000%2Fcallback`
     }
 
     get requestParams() {
         if (this.requestStep === 'requestToken') {
             return this.requestTokenParams
+        }
+        if (this.requestStep === 'accessToken') {
+            return this.accessTokenParams
+        }
+        if (this.requestStep === 'fetchUser') {
+            return this.fetchUserParams
         }
     }
 
@@ -81,11 +123,23 @@ export class Twitter extends Provider {
         if (this.requestStep === 'requestToken') {
             return TwitterURI.REQUEST_TOKEN
         }
+        if (this.requestStep === 'accessToken') {
+            return TwitterURI.ACCESS_TOKEN
+        }
+        if (this.requestStep === 'fetchUser') {
+            // todo: error "Could not authenticate you","code":32
+            // 'content-type': 'application/x-www-form-urlencoded',
+            // ?include_email=true&skip_status=true&include_entities=false
+            return TwitterURI.VERIFY_CREDENTIALS
+        }
     }
 
     get requestMethod() {
-        if (this.requestStep === 'requestToken') {
+        if (this.requestStep === 'requestToken' || this.requestStep === 'fetchUser') {
             return 'get'
+        }
+        if (this.requestStep === 'accessToken') {
+            return 'post'
         }
     }
 

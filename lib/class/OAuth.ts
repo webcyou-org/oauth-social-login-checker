@@ -19,17 +19,6 @@ export class OAuth {
         this.grantType = data.grantType || GRANT.TYPE.AUTHORIZATION_CODE.VALUE
         this.flowType = data.flowType || FLOW.TYPE.AUTHORIZATION_CODE.VALUE
         this.scope = data.scope || ResponseType.code
-
-        // twitter
-        // const parameters: any = this.getOAuth1Params({
-        //     oauth_consumer_key: 'feurfbure',
-        //     oauth_nonce: this.randomString,
-        //     oauth_timestamp: Math.floor(Date.now() / 1000)
-        // })
-        // const OAuthSignature = this.getOAuth1Signature({ url: 'dfewmo', consumerSecret: 'fenewfwi' }, parameters)
-        // console.log(OAuthSignature)
-        // console.log(parameters.oauth_nonce)
-        // console.log(parameters.oauth_timestamp)
     }
 
     getOpenIDFlowType(response_type: ResponseType) {
@@ -59,9 +48,10 @@ export class OAuth {
         return Math.floor(Date.now() / 1000)
     }
 
-    getOAuth1Params({ oauth_consumer_key, oauth_nonce, oauth_timestamp, oauth_signature_method = 'HMAC-SHA1', oauth_version = '1.0'}: any): object {
+    getOAuth1Params({ oauth_consumer_key, oauth_nonce, oauth_timestamp, oauth_signature_method = 'HMAC-SHA1', oauth_version = '1.0', oauth_token = null}: any): object {
         let parameters: any = {
             oauth_consumer_key,
+            oauth_token,
             oauth_nonce: oauth_nonce || this.randomString,
             oauth_timestamp: oauth_timestamp || this.timestamp,
             oauth_signature_method,
@@ -73,13 +63,24 @@ export class OAuth {
         return parameters
     }
 
-    getOAuth1Signature({ httpMethod = 'GET', url, consumerSecret }: any, parameters: any) {
-        const oAuthSignature = OAuthSignature.generate(
-            httpMethod,
-            url,
-            parameters,
-            consumerSecret
-        )
+    getOAuth1Signature({ httpMethod = 'GET', url, consumerSecret }: any, parameters: any, oauthVerifier: any = null) {
+        let oAuthSignature = {}
+        if (oauthVerifier) {
+            oAuthSignature = OAuthSignature.generate(
+                httpMethod,
+                url,
+                parameters,
+                consumerSecret,
+                oauthVerifier
+            )
+        } else {
+            oAuthSignature = OAuthSignature.generate(
+                httpMethod,
+                url,
+                parameters,
+                consumerSecret
+            )
+        }
         return oAuthSignature
     }
 }
