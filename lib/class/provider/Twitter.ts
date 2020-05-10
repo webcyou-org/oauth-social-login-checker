@@ -5,9 +5,6 @@ import { TwitterURI } from '~/lib/enum/end_point_list'
 
 import { pick } from 'lodash'
 
-import queryString from 'query-string'
-const OAuthSignature = require('oauth-signature')
-
 export class Twitter extends Provider {
     public oauth: OAuth
 
@@ -21,6 +18,7 @@ export class Twitter extends Provider {
 
         this.scope = data.scope || ''
         this.name = data.name || 'Twitter'
+        this.requestStepList =  data.requestStepList || ['accessToken']
         this.redirectUri = data.redirect_uri || 'http://localhost:3000/callback/twitter'
         this.oauth = new OAuth()
     }
@@ -53,12 +51,18 @@ export class Twitter extends Provider {
     }
 
     get requestTokenParams() {
-        const timestamp = Math.floor(Date.now() / 1000)
-        const nonce = this.randomString
-        const OAuthSignature = this.getOAuthSignature(timestamp, nonce)
+        const parameters: any = this.oauth.getOAuth1Params({
+            oauth_consumer_key: this.consumerKey
+        })
+
+        const oAuthSignature = this.oauth.getOAuth1Signature({
+            url: `${TwitterURI.DOMAIN}/oauth/request_token`,
+            consumerSecret: this.consumerSecret
+        }, parameters)
+
         return {
             headers: {
-                Authorization: `OAuth oauth_consumer_key="${this.consumerKey}",oauth_signature_method="HMAC-SHA1",oauth_timestamp="${timestamp}",oauth_nonce="${nonce}",oauth_version="1.0",oauth_signature="${OAuthSignature}"`
+                Authorization: `OAuth oauth_consumer_key="${this.consumerKey}",oauth_signature_method="HMAC-SHA1",oauth_timestamp="${parameters.oauth_timestamp}",oauth_nonce="${parameters.oauth_nonce}",oauth_version="1.0",oauth_signature="${oAuthSignature}"`
             }
         }
     }
@@ -85,29 +89,7 @@ export class Twitter extends Provider {
         }
     }
 
-    get randomString(): string {
-        return Math.random().toString(32).substring(2)
-    }
-
     getPickRequest(pickList: string[]): object {
         return pick(this.toRequest, pickList)
-    }
-
-    getOAuthSignature(oauth_timestamp: number, oauth_nonce: string) {
-        const httpMethod = 'GET'
-        const url = `${TwitterURI.DOMAIN}/oauth/request_token`
-        const parameters = {
-            oauth_consumer_key: this.consumerKey,
-            oauth_nonce,
-            oauth_timestamp,
-            oauth_signature_method: 'HMAC-SHA1',
-            oauth_version: '1.0'
-        }
-        return OAuthSignature.generate(
-            httpMethod,
-            url,
-            parameters,
-            this.consumerSecret
-        )
     }
 }
