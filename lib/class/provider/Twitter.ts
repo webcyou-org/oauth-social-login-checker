@@ -19,7 +19,7 @@ export class Twitter extends Provider {
 
         this.scope = data.scope || ''
         this.name = data.name || 'Twitter'
-        this.requestStepList =  data.requestStepList || ['fetchUser']
+        this.requestStepList = ['fetchUser']
         this.redirectUri = data.redirect_uri || 'http://localhost:3000/callback/twitter'
         this.oauth = new OAuth()
     }
@@ -81,14 +81,10 @@ export class Twitter extends Provider {
             oauth_consumer_key: this.consumerKey,
             oauth_token: this.oauth_token
         })
-
         const oAuthSignature = this.oauth.getOAuth1Signature({
             url: TwitterURI.FETCH_USER,
             consumerSecret: this.consumerSecret,
         }, parameters, this.oauth_verifier)
-
-        console.log(parameters)
-
         return {
             headers: {
                 Authorization: `OAuth oauth_consumer_key="${this.consumerKey}",oauth_token="${this.oauth_token}",oauth_signature_method="HMAC-SHA1",oauth_timestamp="${parameters.oauth_timestamp}",oauth_nonce="${parameters.oauth_nonce}",oauth_version="1.0",oauth_signature="${oAuthSignature}"`
