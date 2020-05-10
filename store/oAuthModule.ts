@@ -6,6 +6,7 @@ import { Facebook } from '~/lib/class/provider/Facebook'
 import { GitHub } from '~/lib/class/provider/GitHub'
 import { Twitter } from '~/lib/class/provider/Twitter'
 import { ProviderMap } from '~/lib/config/provider_list'
+import { Storage, LOCAL_STORAGE_KEY } from '~/lib/class/Storage'
 import { actionsToActionTypes } from '~/lib/utility/actionTypes'
 
 // mutation type
@@ -14,6 +15,9 @@ const UPDATE_PROVIDER = 'UPDATE_PROVIDER'
 const SET_SELECTED_PROVIDER = 'SET_SELECTED_PROVIDER'
 const RESET_SELECTED_PROVIDER = 'RESET_SELECTED_PROVIDER'
 const PROVIDER_NEXT_REQUEST = 'PROVIDER_NEXT_REQUEST'
+const SET_STORAGE_TYPE = 'SET_STORAGE_TYPE'
+const RESET_STORAGE_TYPE = 'RESET_STORAGE_TYPE'
+const SET_STORAGE_PROVIDER = 'SET_STORAGE_PROVIDER'
 
 // action type
 export const ActionTypes = actionsToActionTypes([
@@ -22,18 +26,24 @@ export const ActionTypes = actionsToActionTypes([
     'setSelectedProvider',
     'resetSelectedProvider',
     'providerChangeRequest',
-    'providerRequest'
+    'providerRequest',
+    'setStorageType',
+    'resetStorageType',
+    'setStorageProvider'
     ],
     'oAuthModule'
 )
 
-export const state = (): { oauth: OAuth, google: Google, facebook: Facebook, github: GitHub, twitter: Twitter, selectedProvider: any } => ({
+const appLocalStorage = new Storage()
+
+export const state = (): { oauth: OAuth, google: Google, facebook: Facebook, github: GitHub, twitter: Twitter, selectedProvider: any, storage: Storage } => ({
     oauth: new OAuth(),
-    google: new Google(),
-    facebook: new Facebook(),
-    github: new GitHub(),
-    twitter: new Twitter(),
-    selectedProvider: null
+    google: appLocalStorage.isProvider('google') ? new Google(appLocalStorage.getProvider('google')) : new Google(),
+    facebook: appLocalStorage.isProvider('facebook') ? new Facebook(appLocalStorage.getProvider('facebook')) : new Facebook(),
+    github: appLocalStorage.isProvider('github') ? new GitHub(appLocalStorage.getProvider('github')) : new GitHub(),
+    twitter: appLocalStorage.isProvider('twitter') ? new Twitter(appLocalStorage.getProvider('twitter')) : new Twitter(),
+    selectedProvider: null,
+    storage: appLocalStorage
 })
 
 export type State = ReturnType<typeof state>
@@ -68,7 +78,19 @@ export const actions: ActionTree<State, any> = {
 
     resetSelectedProvider(context): void {
         context.commit(RESET_SELECTED_PROVIDER)
-    }
+    },
+
+    setStorageType(context, data): void {
+        context.commit(SET_STORAGE_TYPE, data)
+    },
+
+    resetStorageType(context): void {
+        context.commit(RESET_STORAGE_TYPE)
+    },
+
+    setStorageProvider(context, name): void {
+        context.commit(SET_STORAGE_PROVIDER, name)
+    },
 }
 
 export const mutations: MutationTree<State> = {
@@ -81,6 +103,11 @@ export const mutations: MutationTree<State> = {
         const lowerCaseProviderName = payload.name.toLowerCase()
         const params = omit(payload, ['name'])
         state[lowerCaseProviderName] = merge(state[lowerCaseProviderName], params)
+
+        if (state.storage.type === 'localStorage') {
+            state.storage.data[lowerCaseProviderName] = state[lowerCaseProviderName]
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state.storage))
+        }
     },
     [SET_SELECTED_PROVIDER](state: any, payload): void {
         state.selectedProvider = state[payload.name.toLowerCase()]
@@ -93,5 +120,19 @@ export const mutations: MutationTree<State> = {
         provider.requestStep = provider.requestStepList[0]
         provider.requestStepHistoryList.push(provider.requestStepList[0])
         provider.requestStepList.shift()
+    },
+    [SET_STORAGE_TYPE](state, payload): void {
+        state.storage.type = payload
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state.storage))
+    },
+    [RESET_STORAGE_TYPE](state): void {
+        localStorage.removeItem(LOCAL_STORAGE_KEY)
+        state.storage = new Storage()
+    },
+
+    [SET_STORAGE_PROVIDER](state): void {
+        const lowerCaseProviderName = state.selectedProvider.name.toLowerCase()
+        state.storage.data[lowerCaseProviderName] = state.selectedProvider
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state.storage))
     }
 }

@@ -27,8 +27,8 @@ export class Provider {
         if (!data) data = {}
 
         this.name = data.name || ''
-        this.clientId = data.client_id || ''
-        this.clientSecret = data.client_secret || ''
+        this.clientId = data.client_id || data.clientId || ''
+        this.clientSecret = data.client_secret || data.clientSecret || ''
         this.consumerKey = data.consumer_key || ''
         this.consumerSecret = data.consumer_secret || ''
         this.redirectUri = data.redirect_uri || 'http://localhost:3000/callback'

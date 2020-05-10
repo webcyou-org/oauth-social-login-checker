@@ -11,7 +11,6 @@
                 <tr v-if="provider.grantType">
                     <td>Grant Type</td>
                     <td>{{ provider.grantType }}</td>
-                    <td></td>
                 </tr>
                 <tr>
                     <td>Version</td>
