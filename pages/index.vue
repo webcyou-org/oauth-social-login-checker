@@ -37,6 +37,7 @@ import Component from 'nuxt-class-component'
 
 import ProviderLogin from '~/components/login.component.vue'
 import ProviderOAuth1Login from '~/components/login.1_0.component.vue'
+import OAuthFlow from '~/components/common/oauth-flow.component.vue'
 
 import SaveBox from '~/components/common/save-box.component.vue'
 import { providerList } from '~/lib/config/provider_list'
@@ -46,7 +47,8 @@ import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
     components: {
         SaveBox,
         ProviderLogin,
-        ProviderOAuth1Login
+        ProviderOAuth1Login,
+        OAuthFlow
     }
 })
 export default class Index extends Vue {
