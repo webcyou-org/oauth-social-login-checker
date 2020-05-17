@@ -61,7 +61,6 @@ import { Component, Vue } from 'vue-property-decorator'
 
 @Component
 export default class OAuthFlow extends Vue {
-    stepNum = 3
     characterList = [
         {
             name: 'App User',
@@ -196,7 +195,7 @@ export default class OAuthFlow extends Vue {
         return [
             pos || 'right',
             `width${width}`,
-            { selected: index === this.stepNum }
+            { selected: index === this.oAuthFlow.stepNumber }
         ]
     }
 }

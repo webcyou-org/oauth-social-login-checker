@@ -123,6 +123,9 @@ export class Google extends Provider {
         if (this.requestStep === '') {
             return 3
         }
+        if (this.requestStep === 'requestToken') {
+            return 10
+        }
         return 1
     }
 }

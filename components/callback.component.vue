@@ -71,6 +71,9 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { merge, cloneDeep } from 'lodash'
 import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
+import { ActionTypes as oAuthFlowActionTypes } from '~/store/oAuthFlowModule'
+
+import { sleep } from '~/lib/utility/sleep'
 
 @Component
 export default class ProviderCallBack extends Vue {
@@ -90,6 +93,7 @@ export default class ProviderCallBack extends Vue {
         this.updateProvider(callBackData)
         this.$store.dispatch(oAuthActionTypes.providerChangeRequest)
         this.provider = cloneDeep(this.selectedProvider)
+        this.showOAuthFlow(8)
     }
 
     get selectedProvider(): any {
@@ -98,6 +102,7 @@ export default class ProviderCallBack extends Vue {
 
     async onClickRequest(): Promise<void> {
         await this.updateProvider(this.provider)
+        await this.showOAuthFlow()
         await this.$store
             .dispatch(oAuthActionTypes.providerRequest)
             .then((response: any) => {
@@ -114,6 +119,7 @@ export default class ProviderCallBack extends Vue {
 
     async onClickFetchData(): Promise<void> {
         await this.updateProvider(this.provider)
+        await this.showOAuthFlow()
         await this.$store
             .dispatch(oAuthActionTypes.providerRequest)
             .then((response: any) => {
@@ -126,6 +132,15 @@ export default class ProviderCallBack extends Vue {
         this.$store.dispatch(oAuthActionTypes.setSelectedProvider, {
             name: this.provider.name
         })
+    }
+
+    async showOAuthFlow(num?: any): Promise<void> {
+        await this.$store.dispatch(oAuthFlowActionTypes.update, {
+            stepNumber: num || this.provider.stepNumber,
+            isShow: true
+        })
+        await sleep(5000)
+        await this.$store.dispatch(oAuthFlowActionTypes.hide)
     }
 }
 </script>

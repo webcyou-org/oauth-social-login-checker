@@ -132,6 +132,12 @@ export class GitHub extends Provider {
         if (this.requestStep === '') {
             return 3
         }
+        if (this.requestStep === 'accessToken') {
+            return 10
+        }
+        if (this.requestStep === 'fetchUser') {
+            return 12
+        }
         return 1
     }
 }
