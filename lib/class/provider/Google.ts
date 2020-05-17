@@ -118,4 +118,11 @@ export class Google extends Provider {
     get isSetParams(): boolean {
         return this.requestStep !== 'requestToken'
     }
+
+    get stepNumber(): number {
+        if (this.requestStep === '') {
+            return 3
+        }
+        return 1
+    }
 }

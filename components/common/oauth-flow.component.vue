@@ -23,7 +23,9 @@
                     <li :key="`step-${index}`" :class="`pos${step.pos}`">
                         <div
                             class="box details"
-                            :class="{ selected: stepNum === index + 1 }"
+                            :class="{
+                                selected: oAuthFlow.stepNumber === index + 1
+                            }"
                         >
                             <p class="text num">{{ index + 1 }}</p>
                             <p class="text">{{ step.text }}</p>
@@ -183,6 +185,10 @@ export default class OAuthFlow extends Vue {
         }
     ]
 
+    get oAuthFlow(): any {
+        return this.$store.state.oAuthFlowModule.oAuthFlow
+    }
+
     getArrowClass(
         { pos, width }: { pos: string; width: number },
         index: number
@@ -206,6 +212,7 @@ export default class OAuthFlow extends Vue {
     justify-content: center;
     align-items: center;
     background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
     & > .wrap {
         padding: 30px;
         border-radius: 12px;
@@ -291,7 +298,7 @@ export default class OAuthFlow extends Vue {
     margin-top: 6px;
     border-top: 2px solid #23438b;
     &.selected {
-        animation: step-selected 1.2s linear infinite;
+        animation: step-selected 0.4s linear infinite;
     }
     &::before {
         position: absolute;

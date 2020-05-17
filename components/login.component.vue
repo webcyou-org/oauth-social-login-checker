@@ -41,6 +41,9 @@
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { cloneDeep } from 'lodash'
 import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
+import { ActionTypes as oAuthFlowActionTypes } from '~/store/oAuthFlowModule'
+
+import { sleep } from '~/lib/utility/sleep'
 
 @Component
 export default class ProviderLogin extends Vue {
@@ -52,6 +55,12 @@ export default class ProviderLogin extends Vue {
             oAuthActionTypes.updateProvider,
             this.provider
         )
+        await this.$store.dispatch(oAuthFlowActionTypes.update, {
+            stepNumber: this.provider.stepNumber,
+            isShow: true
+        })
+        await sleep(5000)
+        await this.$store.dispatch(oAuthFlowActionTypes.hide)
         location.href = this.provider.loginURI
     }
 }
