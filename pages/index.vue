@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <o-auth-flow v-if="isShowOAuthFlow"></o-auth-flow>
         <ul v-if="!selectedProvider" class="providerList">
             <li
                 v-for="(provider, index) in providerList"
@@ -53,6 +54,7 @@ import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
 })
 export default class Index extends Vue {
     providerList = providerList
+    isShowOAuthFlow = false
 
     isSelectedProvider(name: string): boolean {
         if (!this.selectedProvider) return false

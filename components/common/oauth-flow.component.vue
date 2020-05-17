@@ -21,13 +21,16 @@
             <ul class="list stepList">
                 <template v-for="(step, index) in stepList">
                     <li :key="`step-${index}`" :class="`pos${step.pos}`">
-                        <div class="box details">
+                        <div
+                            class="box details"
+                            :class="{ selected: stepNum === index + 1 }"
+                        >
                             <p class="text num">{{ index + 1 }}</p>
                             <p class="text">{{ step.text }}</p>
                         </div>
                         <p
-                            class="pic arrow right width1"
-                            :class="getArrowClass(step.arrow)"
+                            class="pic arrow"
+                            :class="getArrowClass(step.arrow, index + 1)"
                         ></p>
                     </li>
                 </template>
@@ -56,6 +59,7 @@ import { Component, Vue } from 'vue-property-decorator'
 
 @Component
 export default class OAuthFlow extends Vue {
+    stepNum = 3
     characterList = [
         {
             name: 'App User',
@@ -179,8 +183,15 @@ export default class OAuthFlow extends Vue {
         }
     ]
 
-    getArrowClass({ pos, width }: { pos: string; width: number }): string[] {
-        return [pos || 'right', `width${width}`]
+    getArrowClass(
+        { pos, width }: { pos: string; width: number },
+        index: number
+    ): any[] {
+        return [
+            pos || 'right',
+            `width${width}`,
+            { selected: index === this.stepNum }
+        ]
     }
 }
 </script>
@@ -263,6 +274,9 @@ export default class OAuthFlow extends Vue {
             }
             .box.details {
                 display: flex;
+                &.selected {
+                    animation: step-detail-selected 0.4s linear infinite;
+                }
             }
             & + li {
                 margin-top: 15px;
@@ -276,6 +290,9 @@ export default class OAuthFlow extends Vue {
     width: 168px;
     margin-top: 6px;
     border-top: 2px solid #23438b;
+    &.selected {
+        animation: step-selected 1.2s linear infinite;
+    }
     &::before {
         position: absolute;
         content: '';
@@ -295,6 +312,28 @@ export default class OAuthFlow extends Vue {
     }
     &.width2 {
         width: 377px;
+    }
+}
+@keyframes step-selected {
+    0% {
+        border-top: 2px solid #23438b;
+    }
+    50% {
+        border-top: 2px dotted #23438b;
+    }
+    100% {
+        border-top: 2px solid #23438b;
+    }
+}
+@keyframes step-detail-selected {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+    100% {
+        opacity: 1;
     }
 }
 </style>
