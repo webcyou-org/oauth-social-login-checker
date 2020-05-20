@@ -116,7 +116,7 @@ export class Google extends Provider {
     }
 
     get isSetParams(): boolean {
-        return this.requestStep !== 'requestToken'
+        return false
     }
 
     get stepNumber(): number {
@@ -127,5 +127,11 @@ export class Google extends Provider {
             return 10
         }
         return 1
+    }
+
+    get nextRequestText() {
+        if (this.requestStep === 'requestToken') {
+            return 'Request Token'
+        }
     }
 }

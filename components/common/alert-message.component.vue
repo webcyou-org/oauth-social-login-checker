@@ -20,7 +20,7 @@ export default class AlertMessage extends Vue {
     created(): void {
         setTimeout(() => {
             this.onHide()
-        }, 5000)
+        }, 4000)
         this.$forceUpdate()
     }
 

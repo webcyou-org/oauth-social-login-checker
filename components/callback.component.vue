@@ -60,8 +60,12 @@
             >
                 <a>Request AccessToken</a>
             </li>
-            <li v-else class="btn green large" @click="onClickFetchData">
-                <a>Fetch Data</a>
+            <li
+                v-else-if="provider.requestStep"
+                class="btn green large"
+                @click="onClickFetchData"
+            >
+                <a>{{ provider.nextRequestText }}</a>
             </li>
         </ul>
     </div>
@@ -125,6 +129,9 @@ export default class ProviderCallBack extends Vue {
             .then((response: any) => {
                 this.responseData = response
             })
+        await this.$store.dispatch(oAuthActionTypes.providerChangeRequest)
+        this.provider = cloneDeep(this.selectedProvider)
+        this.$forceUpdate()
     }
 
     async updateProvider(updateData: any): Promise<void> {
@@ -139,7 +146,7 @@ export default class ProviderCallBack extends Vue {
             stepNumber: num || this.provider.stepNumber,
             isShow: true
         })
-        await sleep(5000)
+        await sleep(4000)
         await this.$store.dispatch(oAuthFlowActionTypes.hide)
     }
 }

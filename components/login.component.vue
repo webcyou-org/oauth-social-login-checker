@@ -59,7 +59,7 @@ export default class ProviderLogin extends Vue {
             stepNumber: this.provider.stepNumber,
             isShow: true
         })
-        await sleep(5000)
+        await sleep(4000)
         await this.$store.dispatch(oAuthFlowActionTypes.hide)
         location.href = this.provider.loginURI
     }
