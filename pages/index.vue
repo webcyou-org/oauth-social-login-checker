@@ -41,7 +41,7 @@ import ProviderOAuth1Login from '~/components/login.1_0.component.vue'
 import OAuthFlow from '~/components/common/oauth-flow.component.vue'
 
 import SaveBox from '~/components/common/save-box.component.vue'
-import { providerList } from '~/lib/config/provider_list'
+import { providerList } from '~/lib/utility/provider'
 import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
 
 @Component({
