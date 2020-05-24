@@ -5,9 +5,9 @@ import { Google } from '~/lib/class/provider/Google'
 import { Facebook } from '~/lib/class/provider/Facebook'
 import { GitHub } from '~/lib/class/provider/GitHub'
 import { Twitter } from '~/lib/class/provider/Twitter'
-import { ProviderMap } from '~/lib/config/provider_list'
 import { Storage, LOCAL_STORAGE_KEY } from '~/lib/class/Storage'
 import { actionsToActionTypes } from '~/lib/utility/actionTypes'
+import { createProvider } from '~/lib/utility/provider'
 
 // mutation type
 const SET_PROVIDER = 'SET_PROVIDER'
@@ -97,7 +97,10 @@ export const mutations: MutationTree<State> = {
     [SET_PROVIDER](state: any, payload: any): void {
         const lowerCaseProviderName = payload.name.toLowerCase()
         const params = omit(payload, ['name'])
-        state[lowerCaseProviderName] = new ProviderMap[lowerCaseProviderName](params)
+        state[lowerCaseProviderName] = createProvider({
+            name: lowerCaseProviderName,
+            data: params
+        })
     },
     [UPDATE_PROVIDER](state: any, payload): void {
         const lowerCaseProviderName = payload.name.toLowerCase()
