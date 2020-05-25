@@ -1,19 +1,15 @@
-import { merge, omit } from 'lodash'
+import { merge, omit, find } from 'lodash'
 import { ActionTree, MutationTree } from 'vuex/types/index'
 import { OAuth } from '~/lib/class/OAuth'
-import { Google } from '~/lib/class/provider/Google'
-import { Facebook } from '~/lib/class/provider/Facebook'
-import { GitHub } from '~/lib/class/provider/GitHub'
-import { Twitter } from '~/lib/class/provider/Twitter'
 import { Storage, LOCAL_STORAGE_KEY } from '~/lib/class/Storage'
 import { actionsToActionTypes } from '~/lib/utility/actionTypes'
-import { createProvider } from '~/lib/utility/provider'
+import { createProviderList } from '~/lib/utility/provider'
 
 // mutation type
 const SET_PROVIDER = 'SET_PROVIDER'
+const GET_PROVIDER = 'GET_PROVIDER'
 const UPDATE_PROVIDER = 'UPDATE_PROVIDER'
-const SET_SELECTED_PROVIDER = 'SET_SELECTED_PROVIDER'
-const RESET_SELECTED_PROVIDER = 'RESET_SELECTED_PROVIDER'
+const RESET_PROVIDER = 'RESET_PROVIDER'
 const PROVIDER_NEXT_REQUEST = 'PROVIDER_NEXT_REQUEST'
 const SET_STORAGE_TYPE = 'SET_STORAGE_TYPE'
 const RESET_STORAGE_TYPE = 'RESET_STORAGE_TYPE'
@@ -23,8 +19,7 @@ const SET_STORAGE_PROVIDER = 'SET_STORAGE_PROVIDER'
 export const ActionTypes = actionsToActionTypes([
     'setProvider',
     'updateProvider',
-    'setSelectedProvider',
-    'resetSelectedProvider',
+    'resetProvider',
     'providerChangeRequest',
     'providerRequest',
     'setStorageType',
@@ -36,20 +31,21 @@ export const ActionTypes = actionsToActionTypes([
 
 const appLocalStorage = new Storage()
 
-export const state = (): { oauth: OAuth, google: Google, facebook: Facebook, github: GitHub, twitter: Twitter, selectedProvider: any, storage: Storage } => ({
+export const state = (): { oauth: OAuth, storage: Storage, provider: any, providerList: any[] } => ({
     oauth: new OAuth(),
-    google: appLocalStorage.isProvider('google') ? new Google(appLocalStorage.getProvider('google')) : new Google(),
-    facebook: appLocalStorage.isProvider('facebook') ? new Facebook(appLocalStorage.getProvider('facebook')) : new Facebook(),
-    github: appLocalStorage.isProvider('github') ? new GitHub(appLocalStorage.getProvider('github')) : new GitHub(),
-    twitter: appLocalStorage.isProvider('twitter') ? new Twitter(appLocalStorage.getProvider('twitter')) : new Twitter(),
-    selectedProvider: null,
-    storage: appLocalStorage
+    // google: appLocalStorage.isProvider('google') ? new Google(appLocalStorage.getProvider('google')) : new Google(),
+    // facebook: appLocalStorage.isProvider('facebook') ? new Facebook(appLocalStorage.getProvider('facebook')) : new Facebook(),
+    // github: appLocalStorage.isProvider('github') ? new GitHub(appLocalStorage.getProvider('github')) : new GitHub(),
+    // twitter: appLocalStorage.isProvider('twitter') ? new Twitter(appLocalStorage.getProvider('twitter')) : new Twitter(),
+    storage: appLocalStorage,
+    provider: null,
+    providerList: createProviderList()
 })
 
 export type State = ReturnType<typeof state>
 
 export const actions: ActionTree<State, any> = {
-    async setProvider(context, data): Promise<void> {
+    setProvider(context, data): void {
         context.commit(SET_PROVIDER, data)
     },
 
@@ -57,8 +53,12 @@ export const actions: ActionTree<State, any> = {
         context.commit(UPDATE_PROVIDER, data)
     },
 
+    resetProvider(context): void {
+        context.commit(RESET_PROVIDER)
+    },
+
     async providerRequest(context): Promise<void> {
-        const provider = context.state.selectedProvider
+        const provider = context.state.provider
         const $service: any = this.$service
         const response = await $service[provider.requestMethod](
             context,
@@ -70,14 +70,6 @@ export const actions: ActionTree<State, any> = {
 
     async providerChangeRequest(context): Promise<void> {
         context.commit(PROVIDER_NEXT_REQUEST)
-    },
-
-    setSelectedProvider(context, data): void {
-        context.commit(SET_SELECTED_PROVIDER, data)
-    },
-
-    resetSelectedProvider(context): void {
-        context.commit(RESET_SELECTED_PROVIDER)
     },
 
     setStorageType(context, data): void {
@@ -94,32 +86,31 @@ export const actions: ActionTree<State, any> = {
 }
 
 export const mutations: MutationTree<State> = {
-    [SET_PROVIDER](state: any, payload: any): void {
+    [SET_PROVIDER](state: any, payload): void {
         const lowerCaseProviderName = payload.name.toLowerCase()
-        const params = omit(payload, ['name'])
-        state[lowerCaseProviderName] = createProvider({
-            name: lowerCaseProviderName,
-            data: params
-        })
+        //noinspection TypeScriptValidateTypes
+        const provider = find(state.providerList, { idName: lowerCaseProviderName })
+        state.provider = provider
     },
     [UPDATE_PROVIDER](state: any, payload): void {
         const lowerCaseProviderName = payload.name.toLowerCase()
         const params = omit(payload, ['name'])
-        state[lowerCaseProviderName] = merge(state[lowerCaseProviderName], params)
+        //noinspection TypeScriptValidateTypes
+        let provider = find(state.providerList, { idName: lowerCaseProviderName })
+        //noinspection TypeScriptValidateTypes
+        provider = merge(provider, params)
+        state.provider = provider
 
         if (state.storage.type === 'localStorage') {
-            state.storage.data[lowerCaseProviderName] = state[lowerCaseProviderName]
+            state.storage.data[lowerCaseProviderName] = provider
             localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state.storage))
         }
     },
-    [SET_SELECTED_PROVIDER](state: any, payload): void {
-        state.selectedProvider = state[payload.name.toLowerCase()]
-    },
-    [RESET_SELECTED_PROVIDER](state): void {
-        state.selectedProvider = null
+    [RESET_PROVIDER](state): void {
+        state.provider = null
     },
     [PROVIDER_NEXT_REQUEST](state): void {
-        const provider = state.selectedProvider
+        const provider = state.provider
         provider.requestStep = provider.requestStepList[0]
         provider.requestStepHistoryList.push(provider.requestStepList[0])
         provider.requestStepList.shift()
@@ -132,10 +123,9 @@ export const mutations: MutationTree<State> = {
         localStorage.removeItem(LOCAL_STORAGE_KEY)
         state.storage = new Storage()
     },
-
     [SET_STORAGE_PROVIDER](state): void {
-        const lowerCaseProviderName = state.selectedProvider.name.toLowerCase()
-        state.storage.data[lowerCaseProviderName] = state.selectedProvider
+        const lowerCaseProviderName = state.provider.name.toLowerCase()
+        state.storage.data[lowerCaseProviderName] = state.provider
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state.storage))
     }
 }

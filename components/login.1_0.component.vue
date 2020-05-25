@@ -86,7 +86,7 @@ export default class ProviderOAuth1Login extends Vue {
     }
 
     get selectedProvider(): any {
-        return this.$store.state.oAuthModule.selectedProvider
+        return this.$store.state.oAuthModule.provider
     }
 
     async onClickRequest(): Promise<void> {
@@ -115,7 +115,7 @@ export default class ProviderOAuth1Login extends Vue {
 
     async updateProvider(updateData: any): Promise<void> {
         await this.$store.dispatch(oAuthActionTypes.updateProvider, updateData)
-        this.$store.dispatch(oAuthActionTypes.setSelectedProvider, {
+        this.$store.dispatch(oAuthActionTypes.setProvider, {
             name: this.provider.name
         })
         this.provider = cloneDeep(this.selectedProvider)

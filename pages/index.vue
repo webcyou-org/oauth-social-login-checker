@@ -35,11 +35,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'nuxt-class-component'
-
 import ProviderLogin from '~/components/login.component.vue'
 import ProviderOAuth1Login from '~/components/login.1_0.component.vue'
 import OAuthFlow from '~/components/common/oauth-flow.component.vue'
-
 import SaveBox from '~/components/common/save-box.component.vue'
 import { providerList } from '~/lib/utility/provider'
 import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
@@ -61,7 +59,7 @@ export default class Index extends Vue {
     }
 
     onClickProvider(name: string) {
-        this.$store.dispatch(oAuthActionTypes.setSelectedProvider, {
+        this.$store.dispatch(oAuthActionTypes.setProvider, {
             name
         })
     }
@@ -75,7 +73,7 @@ export default class Index extends Vue {
     }
 
     get selectedProvider(): any {
-        return this.$store.state.oAuthModule.selectedProvider
+        return this.$store.state.oAuthModule.provider
     }
 
     getIconClassName(name: string): string {

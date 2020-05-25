@@ -43,4 +43,8 @@ export class Provider {
     isRequestStep(step: string): boolean {
         return this.requestStep === step
     }
+
+    get idName() {
+        return this.name.toLowerCase()
+    }
 }

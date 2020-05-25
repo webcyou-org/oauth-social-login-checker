@@ -87,7 +87,7 @@ export default class ProviderCallBack1 extends Vue {
             { name: this.callBackData.name },
             this.callBackData
         )
-        this.$store.dispatch(oAuthActionTypes.setSelectedProvider, {
+        this.$store.dispatch(oAuthActionTypes.setProvider, {
             name: this.callBackData.name
         })
         this.updateProvider(callBackData)
@@ -96,7 +96,7 @@ export default class ProviderCallBack1 extends Vue {
     }
 
     get selectedProvider(): any {
-        return this.$store.state.oAuthModule.selectedProvider
+        return this.$store.state.oAuthModule.provider
     }
 
     async onClickRequest(): Promise<void> {
@@ -126,7 +126,7 @@ export default class ProviderCallBack1 extends Vue {
 
     async updateProvider(updateData: any): Promise<void> {
         await this.$store.dispatch(oAuthActionTypes.updateProvider, updateData)
-        this.$store.dispatch(oAuthActionTypes.setSelectedProvider, {
+        this.$store.dispatch(oAuthActionTypes.setProvider, {
             name: this.provider.name
         })
     }

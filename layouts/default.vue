@@ -26,7 +26,7 @@ import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
 })
 export default class Index extends Vue {
     onClickTitle() {
-        this.$store.dispatch(oAuthActionTypes.resetSelectedProvider)
+        this.$store.dispatch(oAuthActionTypes.resetProvider)
         this.$router.push('/')
     }
 }

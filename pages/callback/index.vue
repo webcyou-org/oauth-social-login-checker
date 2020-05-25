@@ -34,7 +34,7 @@ export default class CallBack extends Vue {
     callBackQueryData: any
 
     asyncData({ query, store }: { query: any; store: any }) {
-        store.dispatch(oAuthActionTypes.setSelectedProvider, {
+        store.dispatch(oAuthActionTypes.setProvider, {
             name: query.state
         })
         return {
@@ -43,7 +43,7 @@ export default class CallBack extends Vue {
     }
 
     get selectedProvider(): any {
-        return this.$store.state.oAuthModule.selectedProvider
+        return this.$store.state.oAuthModule.provider
     }
 
     get oAuthFlow(): any {
