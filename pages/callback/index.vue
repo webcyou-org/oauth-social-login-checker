@@ -18,10 +18,8 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'nuxt-class-component'
-
 import ProviderCallBack from '~/components/callback.component.vue'
 import OAuthFlow from '~/components/common/oauth-flow.component.vue'
-
 import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
 
 @Component({

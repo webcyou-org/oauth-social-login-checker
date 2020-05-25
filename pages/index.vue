@@ -64,10 +64,6 @@ export default class Index extends Vue {
         })
     }
 
-    get oauth(): any {
-        return this.$store.state.oAuthModule.oauth
-    }
-
     get oAuthFlow(): any {
         return this.$store.state.oAuthFlowModule.oAuthFlow
     }

@@ -32,17 +32,17 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { cloneDeep } from 'lodash'
-import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
+import { ActionTypes as storageActionTypes } from '~/store/storageModule'
 
 @Component
 export default class SaveBox extends Vue {
-    storage = cloneDeep(this.$store.state.oAuthModule.storage)
+    storage = cloneDeep(this.$store.state.storageModule.storage)
 
     onClickRadio(type: string) {
         if (type === 'none') {
-            this.$store.dispatch(oAuthActionTypes.resetStorageType)
+            this.$store.dispatch(storageActionTypes.resetStorageType)
         } else {
-            this.$store.dispatch(oAuthActionTypes.setStorageType, type)
+            this.$store.dispatch(storageActionTypes.setStorageType, type)
         }
     }
 }

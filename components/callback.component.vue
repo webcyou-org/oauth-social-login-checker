@@ -76,6 +76,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import { merge, cloneDeep } from 'lodash'
 import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
 import { ActionTypes as oAuthFlowActionTypes } from '~/store/oAuthFlowModule'
+import { ActionTypes as storageActionTypes } from '~/store/storageModule'
 
 import { sleep } from '~/lib/utility/sleep'
 
@@ -136,9 +137,10 @@ export default class ProviderCallBack extends Vue {
 
     async updateProvider(updateData: any): Promise<void> {
         await this.$store.dispatch(oAuthActionTypes.updateProvider, updateData)
-        this.$store.dispatch(oAuthActionTypes.setProvider, {
-            name: this.provider.name
-        })
+        this.$store.dispatch(
+            storageActionTypes.setStorageProvider,
+            this.provider
+        )
     }
 
     async showOAuthFlow(num?: any): Promise<void> {

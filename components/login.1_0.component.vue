@@ -70,6 +70,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import { merge, cloneDeep } from 'lodash'
 import queryString from 'query-string'
 import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
+import { ActionTypes as storageActionTypes } from '~/store/storageModule'
 
 @Component
 export default class ProviderOAuth1Login extends Vue {
@@ -115,10 +116,12 @@ export default class ProviderOAuth1Login extends Vue {
 
     async updateProvider(updateData: any): Promise<void> {
         await this.$store.dispatch(oAuthActionTypes.updateProvider, updateData)
-        this.$store.dispatch(oAuthActionTypes.setProvider, {
-            name: this.provider.name
-        })
         this.provider = cloneDeep(this.selectedProvider)
+        // storage
+        this.$store.dispatch(
+            storageActionTypes.setStorageProvider,
+            this.provider
+        )
     }
 }
 </script>

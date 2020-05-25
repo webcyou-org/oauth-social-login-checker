@@ -42,6 +42,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator'
 import { cloneDeep } from 'lodash'
 import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
 import { ActionTypes as oAuthFlowActionTypes } from '~/store/oAuthFlowModule'
+import { ActionTypes as storageActionTypes } from '~/store/storageModule'
 
 import { sleep } from '~/lib/utility/sleep'
 
@@ -53,6 +54,11 @@ export default class ProviderLogin extends Vue {
     async onClickRequest() {
         await this.$store.dispatch(
             oAuthActionTypes.updateProvider,
+            this.provider
+        )
+        // storage
+        this.$store.dispatch(
+            storageActionTypes.setStorageProvider,
             this.provider
         )
         await this.$store.dispatch(oAuthFlowActionTypes.update, {
