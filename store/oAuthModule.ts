@@ -81,15 +81,12 @@ export const actions: ActionTree<State, any> = {
 
 export const mutations: MutationTree<State> = {
     [SET_PROVIDER](state: any, payload): void {
-        const lowerCaseProviderName = payload.name.toLowerCase()
-        //noinspection TypeScriptValidateTypes
-        state.provider = find(state.providerList, { idName: lowerCaseProviderName })
+        state.provider = find(state.providerList, { idName: payload.name.toLowerCase() } as any)
     },
     [UPDATE_PROVIDER](state: any, payload): void {
-        const lowerCaseProviderName = payload.name.toLowerCase()
+        const lowerCaseProviderName: string = payload.name.toLowerCase()
         const params = omit(payload, ['name'])
-        //noinspection TypeScriptValidateTypes
-        let provider = find(state.providerList, { idName: lowerCaseProviderName })
+        let provider = find(state.providerList, { idName: lowerCaseProviderName } as any)
         //noinspection TypeScriptValidateTypes
         provider = merge(provider, params)
         state.provider = provider
