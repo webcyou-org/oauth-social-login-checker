@@ -1,6 +1,5 @@
 import { merge, omit, find } from 'lodash'
 import { ActionTree, MutationTree } from 'vuex/types/index'
-import { OAuth } from '~/lib/class/OAuth'
 import { Storage, LOCAL_STORAGE_KEY } from '~/lib/class/Storage'
 import { actionsToActionTypes } from '~/lib/utility/actionTypes'
 import { createProviderList } from '~/lib/utility/provider'
@@ -31,12 +30,7 @@ export const ActionTypes = actionsToActionTypes([
 
 const appLocalStorage = new Storage()
 
-export const state = (): { oauth: OAuth, storage: Storage, provider: any, providerList: any[] } => ({
-    oauth: new OAuth(),
-    // google: appLocalStorage.isProvider('google') ? new Google(appLocalStorage.getProvider('google')) : new Google(),
-    // facebook: appLocalStorage.isProvider('facebook') ? new Facebook(appLocalStorage.getProvider('facebook')) : new Facebook(),
-    // github: appLocalStorage.isProvider('github') ? new GitHub(appLocalStorage.getProvider('github')) : new GitHub(),
-    // twitter: appLocalStorage.isProvider('twitter') ? new Twitter(appLocalStorage.getProvider('twitter')) : new Twitter(),
+export const state = (): { storage: Storage, provider: any, providerList: any[] } => ({
     storage: appLocalStorage,
     provider: null,
     providerList: createProviderList()
@@ -89,8 +83,7 @@ export const mutations: MutationTree<State> = {
     [SET_PROVIDER](state: any, payload): void {
         const lowerCaseProviderName = payload.name.toLowerCase()
         //noinspection TypeScriptValidateTypes
-        const provider = find(state.providerList, { idName: lowerCaseProviderName })
-        state.provider = provider
+        state.provider = find(state.providerList, { idName: lowerCaseProviderName })
     },
     [UPDATE_PROVIDER](state: any, payload): void {
         const lowerCaseProviderName = payload.name.toLowerCase()
