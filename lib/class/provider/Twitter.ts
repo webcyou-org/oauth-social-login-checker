@@ -1,8 +1,6 @@
 import { Provider } from '../Provider'
 import { OAuth } from '../OAuth'
-
 import { TwitterURI } from '~/lib/enum/end_point_list'
-
 import { pick } from 'lodash'
 
 export class Twitter extends Provider {

@@ -28,8 +28,8 @@ export class Storage {
     getProvider(name: string) {
         const localStorageData: any = localStorage.getItem(LOCAL_STORAGE_KEY)
         const appData: any = JSON.parse(localStorageData)
-        const lowerCaseProviderName = name.toLowerCase()
-        if (!appData) return false
-        return appData.data[lowerCaseProviderName]
+        if (!appData) return null
+
+        return appData.data[name.toLowerCase()]
     }
 }
