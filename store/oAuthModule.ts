@@ -68,7 +68,9 @@ export const mutations: MutationTree<State> = {
         state.provider = provider
     },
     [RESET_PROVIDER](state): void {
+        let provider: any = find(state.providerList, { idName: state.provider.idName } as any)
         state.provider = null
+        provider.requestStep = ''
     },
     [PROVIDER_NEXT_REQUEST](state): void {
         const provider = state.provider
