@@ -9,6 +9,10 @@
             </thead>
             <tbody>
                 <tr>
+                    <td>Version</td>
+                    <td>OAuth {{ provider.oauth.version }}</td>
+                </tr>
+                <tr>
                     <td>Grant Type</td>
                     <td>Authorization Code</td>
                 </tr>
@@ -30,7 +34,7 @@
             </tbody>
         </table>
         <ul class="btnList center">
-            <li class="btn green large" @click="onClickRequest">
+            <li class="btn green large" @click="onClickLogin">
                 <a>Login</a>
             </li>
         </ul>
@@ -43,7 +47,6 @@ import { cloneDeep } from 'lodash'
 import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
 import { ActionTypes as oAuthFlowActionTypes } from '~/store/oAuthFlowModule'
 import { ActionTypes as storageActionTypes } from '~/store/storageModule'
-
 import { sleep } from '~/lib/utility/sleep'
 
 @Component
@@ -51,7 +54,7 @@ export default class ProviderLogin extends Vue {
     @Prop() readonly providerProp: any
     provider = cloneDeep(this.providerProp)
 
-    async onClickRequest() {
+    async onClickLogin() {
         await this.$store.dispatch(
             oAuthActionTypes.updateProvider,
             this.provider

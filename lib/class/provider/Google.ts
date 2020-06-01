@@ -15,7 +15,7 @@ export class Google extends Provider {
         super(data)
         if (!data) data = {}
 
-        this.scope = data.scope || 'openid profile'
+        this.scope = data.scope || 'openid profile email'
         this.name = data.name || 'Google'
         this.state = data.state || 'google'
         this.authuser = data.authuser || ''

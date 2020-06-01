@@ -19,7 +19,9 @@ export class Twitter extends Provider {
         this.name = data.name || 'Twitter'
         this.requestStepList = ['fetchUser']
         this.redirectUri = data.redirect_uri || 'http://localhost:3000/callback/twitter'
-        this.oauth = new OAuth()
+        this.oauth = new OAuth({
+            version: '1.0'
+        })
     }
 
     get toRequest(): any {
