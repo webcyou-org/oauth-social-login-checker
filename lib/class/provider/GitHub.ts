@@ -1,9 +1,7 @@
 import { Provider } from '../Provider'
 import { OAuth } from '../OAuth'
-
 import { GitHubURI } from '~/lib/enum/end_point_list'
-
-import { pick, merge } from 'lodash'
+import { merge } from 'lodash'
 import queryString from 'query-string'
 
 export class GitHub extends Provider {
@@ -118,10 +116,6 @@ export class GitHub extends Provider {
             'state'
         ])
         return queryString.stringify(params)
-    }
-
-    getPickRequest(pickList: string[]): object {
-        return pick(this.toRequest, pickList)
     }
 
     get isSetParams(): boolean {

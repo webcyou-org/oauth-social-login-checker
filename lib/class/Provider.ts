@@ -1,4 +1,5 @@
 import { GRANT } from '../const/grant_type'
+import { pick } from 'lodash'
 
 export class Provider {
     public name: string
@@ -40,11 +41,19 @@ export class Provider {
         this.nonce = data.nonce || ''
     }
 
+    get toRequest(): any {
+        return {}
+    }
+
     isRequestStep(step: string): boolean {
         return this.requestStep === step
     }
 
     get idName() {
         return this.name.toLowerCase()
+    }
+
+    getPickRequest(pickList: string[]): object {
+        return pick(this.toRequest, pickList)
     }
 }

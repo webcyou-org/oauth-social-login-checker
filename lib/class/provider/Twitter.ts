@@ -1,7 +1,6 @@
 import { Provider } from '../Provider'
 import { OAuth } from '../OAuth'
 import { TwitterURI } from '~/lib/enum/end_point_list'
-import { pick } from 'lodash'
 
 export class Twitter extends Provider {
     public oauth: OAuth
@@ -137,9 +136,5 @@ export class Twitter extends Provider {
         if (this.requestStep === 'accessToken') {
             return 'post'
         }
-    }
-
-    getPickRequest(pickList: string[]): object {
-        return pick(this.toRequest, pickList)
     }
 }

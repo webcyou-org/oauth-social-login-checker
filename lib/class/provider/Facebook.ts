@@ -1,7 +1,6 @@
 import { Provider } from '../Provider'
 import { OAuth } from '../OAuth'
 import { FacebookURI } from '~/lib/enum/end_point_list'
-import { pick } from 'lodash'
 import queryString from 'query-string'
 
 export class Facebook extends Provider {
@@ -137,10 +136,6 @@ export class Facebook extends Provider {
             'state'
         ])
         return queryString.stringify(params)
-    }
-
-    getPickRequest(pickList: string[]): object {
-        return pick(this.toRequest, pickList)
     }
 
     get isSetParams(): boolean {

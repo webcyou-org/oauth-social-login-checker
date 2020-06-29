@@ -1,9 +1,6 @@
 import { Provider } from '../Provider'
 import { OAuth } from '../OAuth'
-
 import { GoogleURI } from '~/lib/enum/end_point_list'
-
-import { pick } from 'lodash'
 import queryString from 'query-string'
 
 export class Google extends Provider {
@@ -109,10 +106,6 @@ export class Google extends Provider {
         if (this.requestStep === 'requestToken') {
             return 'post'
         }
-    }
-
-    getPickRequest(pickList: string[]): object {
-        return pick(this.toRequest, pickList)
     }
 
     get isSetParams(): boolean {
