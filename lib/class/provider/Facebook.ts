@@ -1,14 +1,38 @@
 import { Provider } from '../Provider'
 import { OAuth } from '../OAuth'
-
 import { FacebookURI } from '~/lib/enum/end_point_list'
-
 import { pick } from 'lodash'
 import queryString from 'query-string'
 
 export class Facebook extends Provider {
     public oauth: OAuth
     public data: any = null
+    public requestData: any = {
+        accessToken: {
+            method: 'get',
+            params: '',
+            uri: FacebookURI.ACCESS_TOKEN,
+            no: 10
+        },
+        verification: {
+            method: 'get',
+            params: {
+                input_token: this.access_token,
+                access_token: `${this.clientId}|${this.clientSecret}`
+            },
+            uri: FacebookURI.VERIFICATION,
+            no: 12
+        },
+        fetchUser: {
+            method: 'get',
+            params: {
+                fields: 'name,birthday,email,hometown',
+                access_token: this.access_token
+            },
+            uri: (this.data && this.data.user_id) ? `${FacebookURI.GRAPH_API}${this.data.user_id}/` : '',
+            no: 12
+        }
+    }
 
     constructor(data?: any) {
         super(data)
@@ -99,19 +123,11 @@ export class Facebook extends Provider {
     }
 
     get requestURI() {
-        if (this.requestStep === 'accessToken') {
-            return FacebookURI.ACCESS_TOKEN
-        }
-        if (this.requestStep === 'verification') {
-            return FacebookURI.VERIFICATION
-        }
-        if (this.requestStep === 'fetchUser') {
-            return `${FacebookURI.GRAPH_API}${this.data.user_id}/`
-        }
+        return this.requestData[this.requestStep].uri
     }
 
     get requestMethod() {
-        return 'get'
+        return this.requestData[this.requestStep].method
     }
 
     getLoginQuery() {
@@ -135,12 +151,6 @@ export class Facebook extends Provider {
         if (this.requestStep === '') {
             return 3
         }
-        if (this.requestStep === 'accessToken') {
-            return 10
-        }
-        if (this.requestStep === 'verification' || this.requestStep === 'fetchUser') {
-            return 12
-        }
-        return 1
+        return this.requestData[this.requestStep].no
     }
 }
