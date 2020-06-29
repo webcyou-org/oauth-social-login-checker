@@ -7,6 +7,20 @@ import queryString from 'query-string'
 export class GitHub extends Provider {
     public oauth: OAuth
     public allowSignup: string
+    public requestData: any = {
+        accessToken: {
+            method: 'post',
+            params: '',
+            uri: GitHubURI.ACCESS_TOKEN,
+            no: 10
+        },
+        fetchUser: {
+            method: 'post',
+            params: '',
+            uri: GitHubURI.FETCH_USER,
+            no: 12
+        }
+    }
 
     constructor(data?: any) {
         super(data)
@@ -92,21 +106,11 @@ export class GitHub extends Provider {
     }
 
     get requestURI() {
-        if (this.requestStep === 'accessToken') {
-            return GitHubURI.ACCESS_TOKEN
-        }
-        if (this.requestStep === 'fetchUser') {
-            return GitHubURI.FETCH_USER
-        }
+        return this.requestData[this.requestStep].uri
     }
 
     get requestMethod() {
-        if (this.requestStep === 'accessToken') {
-            return 'post'
-        }
-        if (this.requestStep === 'fetchUser') {
-            return 'post'
-        }
+        return this.requestData[this.requestStep].method
     }
 
     getLoginQuery() {
@@ -126,12 +130,6 @@ export class GitHub extends Provider {
         if (this.requestStep === '') {
             return 3
         }
-        if (this.requestStep === 'accessToken') {
-            return 10
-        }
-        if (this.requestStep === 'fetchUser') {
-            return 12
-        }
-        return 1
+        return this.requestData[this.requestStep].no
     }
 }

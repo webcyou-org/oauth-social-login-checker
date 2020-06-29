@@ -4,11 +4,30 @@ import { TwitterURI } from '~/lib/enum/end_point_list'
 
 export class Twitter extends Provider {
     public oauth: OAuth
-
     public oauth_callback_confirmed: any = null
     public oauth_token: any = null
     public oauth_token_secret: any = null
     public oauth_verifier: any = null
+    public requestData: any = {
+        requestToken: {
+            method: 'get',
+            params: '',
+            uri: TwitterURI.REQUEST_TOKEN,
+            no: 10
+        },
+        accessToken: {
+            method: 'post',
+            params: '',
+            uri: TwitterURI.ACCESS_TOKEN,
+            no: 10
+        },
+        fetchUser: {
+            method: 'get',
+            params: '',
+            uri: TwitterURI.VERIFY_CREDENTIALS,
+            no: 12
+        }
+    }
 
     constructor(data?: any) {
         super(data)
@@ -115,26 +134,16 @@ export class Twitter extends Provider {
     }
 
     get requestURI() {
-        if (this.requestStep === 'requestToken') {
-            return TwitterURI.REQUEST_TOKEN
-        }
-        if (this.requestStep === 'accessToken') {
-            return TwitterURI.ACCESS_TOKEN
-        }
         if (this.requestStep === 'fetchUser') {
             // todo: error "Could not authenticate you","code":32
             // 'content-type': 'application/x-www-form-urlencoded',
             // ?include_email=true&skip_status=true&include_entities=false
             return TwitterURI.VERIFY_CREDENTIALS
         }
+        return this.requestData[this.requestStep].uri
     }
 
     get requestMethod() {
-        if (this.requestStep === 'requestToken' || this.requestStep === 'fetchUser') {
-            return 'get'
-        }
-        if (this.requestStep === 'accessToken') {
-            return 'post'
-        }
+        return this.requestData[this.requestStep].method
     }
 }

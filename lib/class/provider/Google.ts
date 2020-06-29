@@ -7,6 +7,14 @@ export class Google extends Provider {
     public oauth: OAuth
     public authuser: string
     public prompt: string
+    public requestData: any = {
+        requestToken: {
+            method: 'post',
+            params: '',
+            uri: GoogleURI.REQUEST_TOKEN,
+            no: 10
+        }
+    }
 
     constructor(data?: any) {
         super(data)
@@ -97,15 +105,11 @@ export class Google extends Provider {
     }
 
     get requestURI() {
-        if (this.requestStep === 'requestToken') {
-            return GoogleURI.REQUEST_TOKEN
-        }
+        return this.requestData[this.requestStep].uri
     }
 
     get requestMethod() {
-        if (this.requestStep === 'requestToken') {
-            return 'post'
-        }
+        return this.requestData[this.requestStep].method
     }
 
     get isSetParams(): boolean {
@@ -116,10 +120,7 @@ export class Google extends Provider {
         if (this.requestStep === '') {
             return 3
         }
-        if (this.requestStep === 'requestToken') {
-            return 10
-        }
-        return 1
+        return this.requestData[this.requestStep].no
     }
 
     get nextRequestText() {
