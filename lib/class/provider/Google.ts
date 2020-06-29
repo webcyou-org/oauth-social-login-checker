@@ -108,13 +108,6 @@ export class Google extends Provider {
         return false
     }
 
-    get stepNumber(): number {
-        if (this.requestStep === '') {
-            return 3
-        }
-        return this.requestData[this.requestStep].no
-    }
-
     get nextRequestText() {
         if (this.requestStep === 'requestToken') {
             return 'Request Token'

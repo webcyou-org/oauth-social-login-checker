@@ -64,6 +64,13 @@ export class Provider {
         return this.requestData[this.requestStep].uri
     }
 
+    get stepNumber(): number {
+        if (this.requestStep === '') {
+            return 3
+        }
+        return this.requestData[this.requestStep].no
+    }
+
     getPickRequest(pickList: string[]): object {
         return pick(this.toRequest, pickList)
     }

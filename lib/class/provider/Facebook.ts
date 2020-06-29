@@ -133,11 +133,4 @@ export class Facebook extends Provider {
     get isSetParams(): boolean {
         return this.requestStep !== 'fetchUser'
     }
-
-    get stepNumber(): number {
-        if (this.requestStep === '') {
-            return 3
-        }
-        return this.requestData[this.requestStep].no
-    }
 }
