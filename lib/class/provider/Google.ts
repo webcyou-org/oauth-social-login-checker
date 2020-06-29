@@ -104,14 +104,6 @@ export class Google extends Provider {
         }
     }
 
-    get requestURI() {
-        return this.requestData[this.requestStep].uri
-    }
-
-    get requestMethod() {
-        return this.requestData[this.requestStep].method
-    }
-
     get isSetParams(): boolean {
         return false
     }

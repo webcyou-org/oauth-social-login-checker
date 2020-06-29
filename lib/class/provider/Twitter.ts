@@ -142,8 +142,4 @@ export class Twitter extends Provider {
         }
         return this.requestData[this.requestStep].uri
     }
-
-    get requestMethod() {
-        return this.requestData[this.requestStep].method
-    }
 }

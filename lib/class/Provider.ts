@@ -24,6 +24,9 @@ export class Provider {
     public token_type: string | null = null
     public id_token: string | null = null
 
+    // override
+    public requestData: any = {}
+
     constructor(data?: any) {
         if (!data) data = {}
 
@@ -51,6 +54,14 @@ export class Provider {
 
     get idName() {
         return this.name.toLowerCase()
+    }
+
+    get requestMethod() {
+        return this.requestData[this.requestStep].method
+    }
+
+    get requestURI() {
+        return this.requestData[this.requestStep].uri
     }
 
     getPickRequest(pickList: string[]): object {

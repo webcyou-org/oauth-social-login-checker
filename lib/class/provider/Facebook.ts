@@ -121,14 +121,6 @@ export class Facebook extends Provider {
         }
     }
 
-    get requestURI() {
-        return this.requestData[this.requestStep].uri
-    }
-
-    get requestMethod() {
-        return this.requestData[this.requestStep].method
-    }
-
     getLoginQuery() {
         const params = this.getPickRequest([
             'client_id',
