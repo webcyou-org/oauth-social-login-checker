@@ -2,7 +2,6 @@ import { Provider } from '../Provider'
 import { OAuth } from '../OAuth'
 import { GitHubURI } from '~/lib/enum/end_point_list'
 import { merge } from 'lodash'
-import queryString from 'query-string'
 
 export class GitHub extends Provider {
     public oauth: OAuth
@@ -93,7 +92,7 @@ export class GitHub extends Provider {
     }
 
     get loginURI(): string {
-        return `${GitHubURI.LOGIN}?${this.getLoginQuery()}`
+        return `${GitHubURI.LOGIN}?${this.getLoginQuery(['client_id', 'scope', 'state'])}`
     }
 
     get requestParams() {
@@ -103,15 +102,6 @@ export class GitHub extends Provider {
         if (this.requestStep === 'fetchUser') {
             return this.fetchUserParams
         }
-    }
-
-    getLoginQuery() {
-        const params = this.getPickRequest([
-            'client_id',
-            'scope',
-            'state'
-        ])
-        return queryString.stringify(params)
     }
 
     get isSetParams(): boolean {

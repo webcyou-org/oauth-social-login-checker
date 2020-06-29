@@ -1,5 +1,6 @@
 import { GRANT } from '../const/grant_type'
 import { pick } from 'lodash'
+import queryString from 'query-string'
 
 export class Provider {
     public name: string
@@ -73,5 +74,10 @@ export class Provider {
 
     getPickRequest(pickList: string[]): object {
         return pick(this.toRequest, pickList)
+    }
+
+    getLoginQuery(pickList: string[]) {
+        const params = this.getPickRequest(pickList)
+        return queryString.stringify(params)
     }
 }

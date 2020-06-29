@@ -1,7 +1,6 @@
 import { Provider } from '../Provider'
 import { OAuth } from '../OAuth'
 import { FacebookURI } from '~/lib/enum/end_point_list'
-import queryString from 'query-string'
 
 export class Facebook extends Provider {
     public oauth: OAuth
@@ -106,7 +105,7 @@ export class Facebook extends Provider {
     }
 
     get loginURI(): string {
-        return `${FacebookURI.LOGIN}?${this.getLoginQuery()}`
+        return `${FacebookURI.LOGIN}?${this.getLoginQuery(['client_id', 'redirect_uri', 'state'])}`
     }
 
     get requestParams() {
@@ -119,15 +118,6 @@ export class Facebook extends Provider {
         if (this.requestStep === 'fetchUser') {
             return this.fetchUserParams
         }
-    }
-
-    getLoginQuery() {
-        const params = this.getPickRequest([
-            'client_id',
-            'redirect_uri',
-            'state'
-        ])
-        return queryString.stringify(params)
     }
 
     get isSetParams(): boolean {

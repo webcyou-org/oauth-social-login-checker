@@ -1,7 +1,6 @@
 import { Provider } from '../Provider'
 import { OAuth } from '../OAuth'
 import { GoogleURI } from '~/lib/enum/end_point_list'
-import queryString from 'query-string'
 
 export class Google extends Provider {
     public oauth: OAuth
@@ -48,19 +47,14 @@ export class Google extends Provider {
         }
     }
 
-    get loginQuery() {
-        const params = this.getPickRequest([
+    get loginURI(): string {
+        return `${GoogleURI.LOGIN}?${this.getLoginQuery([
             'response_type',
             'client_id',
             'redirect_uri',
             'scope',
             'state'
-        ])
-        return queryString.stringify(params)
-    }
-
-    get loginURI(): string {
-        return `${GoogleURI.LOGIN}?${this.loginQuery}`
+        ])}`
     }
 
     get loginDisplayObject(): object {
