@@ -50,16 +50,20 @@ module.exports = {
         }
     },
     buildModules: ['@nuxt/typescript-build', '@nuxtjs/stylelint-module'],
+    dev: process.env.NODE_ENV === 'development',
     modules: [
         // Doc: https://axios.nuxtjs.org/usage
         '@nuxtjs/axios',
         '@nuxtjs/proxy',
-        '@nuxtjs/pwa'
+        '@nuxtjs/pwa',
+        'nuxt-sass-resources-loader'
     ],
     axios: {
         proxy: true
     },
     build: {
-        // extend(config, ctx) {}
+        extend(config) {
+            config.output.publicPath = './_nuxt/'
+        }
     }
 }

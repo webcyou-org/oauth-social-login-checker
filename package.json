@@ -4,11 +4,14 @@
   "description": "OAuth Social Login Checker",
   "author": "daisuke.takayama",
   "private": true,
+  "main": "main.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development PORT=3000 nuxt",
     "build": "nuxt build",
     "start": "cross-env NODE_ENV=development PORT=3000 nuxt",
     "generate": "nuxt generate",
+    "electron:dev": "cross-env NODE_ENV=development electron .",
+    "electron:build": "cross-env NODE_ENV=production nuxt build && electron-builder",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lintfix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
     "test": "jest"
@@ -39,12 +42,15 @@
     "@nuxtjs/eslint-config-typescript": "^1.0.0",
     "@nuxtjs/eslint-module": "^1.0.0",
     "@nuxtjs/stylelint-module": "^3.1.0",
-    "@vue/test-utils": "^1.0.0-beta.27",
     "@types/lodash": "^4.14.150",
     "@types/oauth": "^0.9.1",
-    "vue-property-decorator": "^8.4.2",
+    "@vue/test-utils": "^1.0.0-beta.27",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.1.0",
+    "cross-env": "^5.2.0",
+    "electron": "^9.0.5",
+    "electron-builder": "^22.7.0",
+    "electron-devtools-installer": "^3.1.0",
     "eslint": "^6.1.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-nuxt": ">=0.4.2",
@@ -54,11 +60,12 @@
     "lint-staged": "^10.0.0",
     "node-sass": "^4.14.0",
     "nodemon": "^1.18.9",
-    "cross-env": "^5.2.0",
+    "nuxt-sass-resources-loader": "^2.0.5",
     "prettier": "^1.19.1",
     "sass-loader": "^8.0.2",
     "stylelint": "^10.1.0",
     "ts-jest": "^25.0.0",
-    "vue-jest": "^4.0.0-0"
+    "vue-jest": "^4.0.0-0",
+    "vue-property-decorator": "^8.4.2"
   }
 }
