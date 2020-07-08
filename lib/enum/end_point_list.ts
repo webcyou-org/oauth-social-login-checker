@@ -19,7 +19,8 @@ export enum FacebookURI {
 export enum TwitterURI {
     DOMAIN = 'https://api.twitter.com',
     REQUEST_TOKEN = '/twitter_api/oauth/request_token',
-    LOGIN = 'https://api.twitter.com/oauth/authenticate',
+    // LOGIN = 'https://api.twitter.com/oauth/authenticate',
+    LOGIN = 'https://api.twitter.com/oauth/authorize',
     ACCESS_TOKEN = '/twitter_api/oauth/access_token',
     VERIFY_CREDENTIALS = '/twitter_api/1.1/account/verify_credentials.json',
     FETCH_USER = 'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true&skip_status=true&include_entities=false'

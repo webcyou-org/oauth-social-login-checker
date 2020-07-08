@@ -35,7 +35,7 @@ export class Twitter extends Provider {
 
         this.scope = data.scope || ''
         this.name = data.name || 'Twitter'
-        this.requestStepList = ['fetchUser']
+        this.requestStepList = ['accessToken', 'fetchUser']
         this.redirectUri = data.redirect_uri || 'http://localhost:3000/callback/twitter'
         this.oauth = new OAuth({
             version: '1.0'
@@ -94,6 +94,23 @@ export class Twitter extends Provider {
         }
     }
 
+    get accessTokenParams() {
+        const parameters: any = this.oauth.getOAuth1Params({
+            oauth_consumer_key: this.consumerKey,
+            oauth_token: this.oauth_token
+        })
+        const oAuthSignature = this.oauth.getOAuth1Signature({
+            url: `${TwitterURI.DOMAIN}/oauth/access_token`,
+            consumerSecret: this.consumerSecret,
+        }, parameters, this.oauth_verifier)
+
+        return {
+            headers: {
+                Authorization: `OAuth oauth_consumer_key="${this.consumerKey}",oauth_token="${this.oauth_token}",oauth_verifier="${this.oauth_verifier}",oauth_signature_method="HMAC-SHA1",oauth_timestamp="${parameters.oauth_timestamp}",oauth_nonce="${parameters.oauth_nonce}",oauth_version="1.0",oauth_signature="${oAuthSignature}"`
+            }
+        }
+    }
+
     get fetchUserParams() {
         const parameters: any = this.oauth.getOAuth1Params({
             oauth_consumer_key: this.consumerKey,
@@ -107,13 +124,6 @@ export class Twitter extends Provider {
             headers: {
                 Authorization: `OAuth oauth_consumer_key="${this.consumerKey}",oauth_token="${this.oauth_token}",oauth_signature_method="HMAC-SHA1",oauth_timestamp="${parameters.oauth_timestamp}",oauth_nonce="${parameters.oauth_nonce}",oauth_version="1.0",oauth_signature="${oAuthSignature}"`
             }
-        }
-    }
-
-    get accessTokenParams() {
-        return {
-            oauth_token: this.oauth_token,
-            oauth_verifier: this.oauth_verifier
         }
     }
 
@@ -134,6 +144,9 @@ export class Twitter extends Provider {
     }
 
     get requestURI() {
+        if (this.requestStep === 'accessToken') {
+            return TwitterURI.ACCESS_TOKEN
+        }
         if (this.requestStep === 'fetchUser') {
             // todo: error "Could not authenticate you","code":32
             // 'content-type': 'application/x-www-form-urlencoded',

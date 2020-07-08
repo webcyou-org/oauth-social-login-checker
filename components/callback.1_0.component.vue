@@ -56,15 +56,11 @@
         </table>
 
         <ul class="btnList center">
-            <li
-                v-if="provider.isSetParams"
-                class="btn green large"
-                @click="onClickRequest"
-            >
-                <a>Request AccessToken</a>
-            </li>
-            <li v-else class="btn green large" @click="onClickFetchData">
-                <a>Fetch Data</a>
+            <li class="btn green large" @click="onClickFetchData">
+                <a v-if="provider.requestStep !== 'fetchUser'">
+                    Request AccessToken
+                </a>
+                <a v-else>Fetch User</a>
             </li>
         </ul>
     </div>
@@ -73,6 +69,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator'
 import { merge, cloneDeep } from 'lodash'
+import queryString from 'query-string'
 import { ActionTypes as oAuthActionTypes } from '~/store/oAuthModule'
 import { ActionTypes as storageActionTypes } from '~/store/storageModule'
 
@@ -121,8 +118,22 @@ export default class ProviderCallBack1 extends Vue {
         await this.$store
             .dispatch(oAuthActionTypes.providerRequest)
             .then((response: any) => {
-                this.responseData = response
+                const responseObject = queryString.parse(response)
+                console.log(queryString.parse(response))
+                this.responseData = responseObject
+
+                const updateObject = {
+                    name: this.provider.name,
+                    access_token: responseObject.oauth_token,
+                    oauth_token_secret: responseObject.oauth_token_secret,
+                    screen_name: responseObject.screen_name,
+                    user_id: responseObject.user_id
+                }
+                this.updateProvider(updateObject)
             })
+        await this.$store.dispatch(oAuthActionTypes.providerChangeRequest)
+        this.provider = cloneDeep(this.selectedProvider)
+        this.$forceUpdate()
     }
 
     async updateProvider(updateData: any): Promise<void> {
