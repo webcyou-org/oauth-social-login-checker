@@ -118,18 +118,21 @@ export default class ProviderCallBack1 extends Vue {
         await this.$store
             .dispatch(oAuthActionTypes.providerRequest)
             .then((response: any) => {
-                const responseObject = queryString.parse(response)
-                console.log(queryString.parse(response))
-                this.responseData = responseObject
+                if (this.provider.requestStep !== 'fetchUser') {
+                    const responseObject = queryString.parse(response)
+                    this.responseData = responseObject
 
-                const updateObject = {
-                    name: this.provider.name,
-                    access_token: responseObject.oauth_token,
-                    oauth_token_secret: responseObject.oauth_token_secret,
-                    screen_name: responseObject.screen_name,
-                    user_id: responseObject.user_id
+                    const updateObject = {
+                        name: this.provider.name,
+                        access_token: responseObject.oauth_token,
+                        oauth_token_secret: responseObject.oauth_token_secret,
+                        screen_name: responseObject.screen_name,
+                        user_id: responseObject.user_id
+                    }
+                    this.updateProvider(updateObject)
+                } else {
+                    this.responseData = response
                 }
-                this.updateProvider(updateObject)
             })
         await this.$store.dispatch(oAuthActionTypes.providerChangeRequest)
         this.provider = cloneDeep(this.selectedProvider)

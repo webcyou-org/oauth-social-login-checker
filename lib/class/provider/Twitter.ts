@@ -114,15 +114,15 @@ export class Twitter extends Provider {
     get fetchUserParams() {
         const parameters: any = this.oauth.getOAuth1Params({
             oauth_consumer_key: this.consumerKey,
-            oauth_token: this.oauth_token
+            oauth_token: this.access_token
         })
         const oAuthSignature = this.oauth.getOAuth1Signature({
             url: TwitterURI.FETCH_USER,
             consumerSecret: this.consumerSecret,
-        }, parameters, this.oauth_verifier)
+        }, parameters, this.oauth_token_secret)
         return {
             headers: {
-                Authorization: `OAuth oauth_consumer_key="${this.consumerKey}",oauth_token="${this.oauth_token}",oauth_signature_method="HMAC-SHA1",oauth_timestamp="${parameters.oauth_timestamp}",oauth_nonce="${parameters.oauth_nonce}",oauth_version="1.0",oauth_signature="${oAuthSignature}"`
+                Authorization: `OAuth oauth_consumer_key="${this.consumerKey}",oauth_token="${this.access_token}",oauth_signature_method="HMAC-SHA1",oauth_timestamp="${parameters.oauth_timestamp}",oauth_nonce="${parameters.oauth_nonce}",oauth_version="1.0",oauth_signature="${oAuthSignature}"`
             }
         }
     }
