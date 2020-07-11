@@ -56,7 +56,7 @@
         </table>
 
         <ul class="btnList center">
-            <li class="btn green large" @click="onClickFetchData">
+            <li class="btn green large" @click="onClickRequest">
                 <a v-if="provider.requestStep !== 'fetchUser'">
                     Request AccessToken
                 </a>
@@ -98,22 +98,6 @@ export default class ProviderCallBack1 extends Vue {
     }
 
     async onClickRequest(): Promise<void> {
-        await this.updateProvider(this.provider)
-        await this.$store
-            .dispatch(oAuthActionTypes.providerRequest)
-            .then((response: any) => {
-                const responseData = merge(
-                    { name: this.provider.name },
-                    response
-                )
-                this.updateProvider(responseData)
-            })
-        await this.$store.dispatch(oAuthActionTypes.providerChangeRequest)
-        this.provider = cloneDeep(this.selectedProvider)
-        this.$forceUpdate()
-    }
-
-    async onClickFetchData(): Promise<void> {
         await this.updateProvider(this.provider)
         await this.$store
             .dispatch(oAuthActionTypes.providerRequest)
